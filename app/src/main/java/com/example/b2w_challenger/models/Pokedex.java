@@ -2,6 +2,7 @@ package com.example.b2w_challenger.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class Pokedex {
@@ -12,9 +13,9 @@ public class Pokedex {
     String next;
 
     @SerializedName("results")
-    List<Pokemon> results = null;
+    List<PokemonSimple> results = null;
 
-    public Pokedex(List<Pokemon> results) {
+    public Pokedex(List<PokemonSimple> results) {
         this.results = results;
     }
 
@@ -34,11 +35,24 @@ public class Pokedex {
         this.next = next;
     }
 
-    public List<Pokemon> getResults() {
+    public List<PokemonSimple> getResults() {
         return results;
     }
 
-    public void setResults(List<Pokemon> results) {
+    public void setResults(List<PokemonSimple> results) {
         this.results = results;
+    }
+
+    public class PokemonSimple implements Serializable {
+        @SerializedName("name")
+        String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 }

@@ -2,7 +2,7 @@ package com.example.b2w_challenger.ui.presenter;
 
 import com.example.b2w_challenger.models.Pokedex;
 import com.example.b2w_challenger.services.PokemonService;
-import com.example.b2w_challenger.ui.interfaces.PokedexContract;
+import com.example.b2w_challenger.ui.contracts.PokedexContract;
 
 import javax.inject.Inject;
 
@@ -12,13 +12,13 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
 public class PokedexPresenter implements PokedexContract.PokedexPresenterInterface {
-    private PokedexContract.PokedexRequest pokedexInterface;
+    private PokedexContract.PokedexRequestListener pokedexInterface;
     private PokemonService pokemonService;
 
     @Inject
     Retrofit retrofit;
 
-    public PokedexPresenter(PokedexContract.PokedexRequest pokedexInterface) {
+    public PokedexPresenter(PokedexContract.PokedexRequestListener pokedexInterface) {
         this.pokedexInterface = pokedexInterface;
     }
 
@@ -48,6 +48,7 @@ public class PokedexPresenter implements PokedexContract.PokedexPresenterInterfa
 
     @Override
     public void getNextPokedex(int offset, int limit) {
+        pokemonService = retrofit.create(PokemonService.class);
         pokemonService.getNextPagePokedex(offset, limit)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())

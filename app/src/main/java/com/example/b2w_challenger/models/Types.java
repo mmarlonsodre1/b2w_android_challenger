@@ -2,21 +2,19 @@ package com.example.b2w_challenger.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class Types {
     @SerializedName("type")
-    List<Type> abilities = null;
+    Type type;
 
-    public List<Type> getAbilities() {
-        return abilities;
+    public Type getType() {
+        return type;
     }
 
-    public void setAbilities(List<Type> abilities) {
-        this.abilities = abilities;
+    public void setType(Type type) {
+        this.type = type;
     }
 
-    private class Type {
+    public class Type {
         @SerializedName("name")
         String name;
 

@@ -12,10 +12,10 @@ public class Pokemon {
     String name;
 
     @SerializedName("abilities")
-    List<Abilities> abilities = null;
+    List<Ability> abilities = null;
 
     @SerializedName("sprites")
-    List<Sprites> sprites = null;
+    Sprites sprites;
 
     @SerializedName("stats")
     List<Stats> stats = null;
@@ -39,19 +39,19 @@ public class Pokemon {
         this.name = name;
     }
 
-    public List<Abilities> getAbilities() {
+    public List<Ability> getAbilities() {
         return abilities;
     }
 
-    public void setAbilities(List<Abilities> abilities) {
+    public void setAbilities(List<Ability> abilities) {
         this.abilities = abilities;
     }
 
-    public List<Sprites> getSprites() {
+    public Sprites getSprites() {
         return sprites;
     }
 
-    public void setSprites(List<Sprites> sprites) {
+    public void setSprites(Sprites sprites) {
         this.sprites = sprites;
     }
 
