@@ -3,6 +3,8 @@ package com.example.b2w_challenger.ui.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.b2w_challenger.R;
 import com.example.b2w_challenger.models.Pokedex;
 import com.example.b2w_challenger.ui.contracts.PokedexContract;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -35,6 +38,12 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txtName.setText(pokemonList.get(position).getName());
         holder.bind(getPokemon(position));
+
+        String[] url = pokemonList.get(position).getUrl().split("/");
+        Picasso.get().load("https://pokeres.bastionbot.org/images/pokemon/" + url[url.length - 1] + ".png")
+                .placeholder(R.drawable.ball)
+                .fit()
+                .into(holder.imgPoke);
     }
 
     @Override
@@ -54,10 +63,12 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView txtName;
+        private ImageView imgPoke;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtName = itemView.findViewById(R.id.txtName);
+            txtName = itemView.findViewById(R.id.tv_poke_name);
+            imgPoke = itemView.findViewById(R.id.img_poke);
         }
 
         public void bind(Pokedex.PokemonSimple pokemon) {

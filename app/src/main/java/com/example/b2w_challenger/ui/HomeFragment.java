@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -14,21 +15,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.b2w_challenger.MyApplication;
 import com.example.b2w_challenger.R;
 import com.example.b2w_challenger.models.Pokedex;
+import com.example.b2w_challenger.models.Types;
 import com.example.b2w_challenger.models.viewModels.PokedexViewModel;
 import com.example.b2w_challenger.ui.adapter.PokedexAdapter;
 import com.example.b2w_challenger.ui.contracts.PokedexContract;
 import com.example.b2w_challenger.ui.presenter.PokedexPresenter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import static androidx.core.content.ContextCompat.getDrawable;
 import static com.example.b2w_challenger.services.PokemonService.BASE_URL;
 
 public class HomeFragment extends Fragment
