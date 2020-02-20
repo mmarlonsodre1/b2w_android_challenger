@@ -1,7 +1,9 @@
 package com.example.b2w_challenger.ui.presenter;
 
 import com.example.b2w_challenger.models.AbilityInfo;
+import com.example.b2w_challenger.models.Evolution;
 import com.example.b2w_challenger.models.Pokemon;
+import com.example.b2w_challenger.models.Specie;
 import com.example.b2w_challenger.services.PokemonService;
 import com.example.b2w_challenger.ui.contracts.AbilityContract;
 
@@ -57,6 +59,54 @@ public class AbilityPresenter implements AbilityContract.AbilityPresenterInterfa
                     @Override
                     public void onNext(Pokemon pokemon) {
                         abilitiesInterface.onPokemonSucess(pokemon);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        abilitiesInterface.onError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        abilitiesInterface.onComplete();
+                    }
+                });
+    }
+
+    @Override
+    public void getPokemonSpecie(String pokemonName) {
+        abilitiesService = retrofit.create(PokemonService.class);
+        abilitiesService.getPokemonSpecie(pokemonName)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<Specie>() {
+                    @Override
+                    public void onNext(Specie specie) {
+                        abilitiesInterface.onPokemonSpecieSucess(specie);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        abilitiesInterface.onError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        abilitiesInterface.onComplete();
+                    }
+                });
+    }
+
+    @Override
+    public void getPokemonEvolution(int idEvolution) {
+        abilitiesService = retrofit.create(PokemonService.class);
+        abilitiesService.getPokemonEvolution(idEvolution)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<Evolution>() {
+                    @Override
+                    public void onNext(Evolution evolution) {
+                        abilitiesInterface.onPokemonEvolutionSucess(evolution);
                     }
 
                     @Override

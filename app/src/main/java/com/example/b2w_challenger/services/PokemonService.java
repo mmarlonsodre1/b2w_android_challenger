@@ -1,8 +1,10 @@
 package com.example.b2w_challenger.services;
 
 import com.example.b2w_challenger.models.AbilityInfo;
+import com.example.b2w_challenger.models.Evolution;
 import com.example.b2w_challenger.models.Pokedex;
 import com.example.b2w_challenger.models.Pokemon;
+import com.example.b2w_challenger.models.Specie;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -21,6 +23,15 @@ public interface PokemonService {
     @GET("pokemon/{namePokemon}")
     Observable<Pokemon> getPokemonInfo(@Path("namePokemon") String namePokemon);
 
+    @GET("pokemon-species/{namePokemon}")
+    Observable<Specie> getPokemonSpecie(@Path("namePokemon") String namePokemon);
+
+    @GET("evolution-chain/{idEvolution}")
+    Observable<Evolution> getPokemonEvolution(@Path("idEvolution") int idEvolution);
+
     @GET("ability/{idAbility}")
     Observable<AbilityInfo> getAbilityInfo(@Path("idAbility") int idAbility);
+
+
+
 }

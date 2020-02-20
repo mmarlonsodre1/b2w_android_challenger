@@ -4,20 +4,25 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.b2w_challenger.MyApplication;
 import com.example.b2w_challenger.R;
 import com.example.b2w_challenger.models.AbilityInfo;
+import com.example.b2w_challenger.models.Evolution;
 import com.example.b2w_challenger.models.Pokedex;
 import com.example.b2w_challenger.models.Pokemon;
+import com.example.b2w_challenger.models.Specie;
+import com.example.b2w_challenger.models.Stats;
 import com.example.b2w_challenger.models.Types;
+import com.example.b2w_challenger.ui.adapter.EvolutionAdapter;
 import com.example.b2w_challenger.ui.contracts.AbilityContract;
 import com.example.b2w_challenger.ui.presenter.AbilityPresenter;
 import com.squareup.picasso.Picasso;
@@ -32,8 +37,13 @@ import static com.example.b2w_challenger.services.PokemonService.BASE_URL;
 public class PokemonFragment extends Fragment
         implements AbilityContract.AbilitiesRequestListener {
     private AbilityPresenter presenter;
+    private EvolutionAdapter evolutionAdapter;
     private List<AbilityInfo> abilityList;
+    private List<Pokemon> pokemonsList;
+    private Pokemon pokemon;
+    private boolean loadAllServices = true;
 
+    private RecyclerView rvEvolution;
     private ImageView imgPoke;
     private ImageView imgBug;
     private ImageView imgDark;
@@ -54,6 +64,13 @@ public class PokemonFragment extends Fragment
     private ImageView imgSteel;
     private ImageView imgWater;
 
+    private TextView tvHP;
+    private TextView tvAttack;
+    private TextView tvDefense;
+    private TextView tvSpecialAttack;
+    private TextView tvSpecialDefense;
+    private TextView tvSpeed;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,9 +90,11 @@ public class PokemonFragment extends Fragment
         presenter.getPokemon(pokemon.getName());
 
         abilityList = new ArrayList<>();
+        pokemonsList = new ArrayList<>();
     }
 
     private void setupView(View view) {
+        rvEvolution = view.findViewById(R.id.rv_evolution);
         imgPoke = view.findViewById(R.id.img_poke);
         imgBug = view.findViewById(R.id.img_bug);
         imgDark = view.findViewById(R.id.img_dark);
@@ -95,6 +114,13 @@ public class PokemonFragment extends Fragment
         imgRock = view.findViewById(R.id.img_rock);
         imgSteel = view.findViewById(R.id.img_steel);
         imgWater = view.findViewById(R.id.img_water);
+
+        tvHP = view.findViewById(R.id.tv_hp);
+        tvAttack = view.findViewById(R.id.tv_attack);
+        tvDefense = view.findViewById(R.id.tv_defense);
+        tvSpecialAttack = view.findViewById(R.id.tv_special_attack);
+        tvSpecialDefense = view.findViewById(R.id.tv_special_defense);
+        tvSpeed = view.findViewById(R.id.tv_speed);
     }
 
     private void forPokemonTypes(List<Types> types) {
@@ -176,6 +202,31 @@ public class PokemonFragment extends Fragment
         }
     }
 
+    private void forStats(List<Stats> stats) {
+        for (int i = 0; i < stats.size(); i++) {
+            switch (i) {
+                case 0:
+                    tvSpeed.setText(stats.get(0).getBase_stat());
+                    break;
+                case 1:
+                    tvSpecialDefense.setText(stats.get(1).getBase_stat());
+                    break;
+                case 2:
+                    tvSpecialAttack.setText(stats.get(2).getBase_stat());
+                    break;
+                case 3:
+                    tvDefense.setText(stats.get(3).getBase_stat());
+                    break;
+                case 4:
+                    tvAttack.setText(stats.get(4).getBase_stat());
+                    break;
+                case 5:
+                    tvHP.setText(stats.get(5).getBase_stat());
+                    break;
+            }
+        }
+    }
+
     @Override
     public void onAbilitySucess(AbilityInfo abilityInfo) {
         if (abilityInfo != null) {
@@ -186,18 +237,59 @@ public class PokemonFragment extends Fragment
     @Override
     public void onPokemonSucess(Pokemon pokemon) {
         if (pokemon != null) {
-            Picasso.get().load("https://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png")
-                    .placeholder(R.drawable.ball)
-                    .fit()
-                    .into(imgPoke);
-
-            forPokemonTypes(pokemon.getTypes());
-
-            for (int i = 0; i < pokemon.getAbilities().size(); i++) {
-                String[] ability = pokemon.getAbilities().get(i).getAbilitySimple().getUrl().split("/");
-                presenter.getAbility(Integer.parseInt(ability[ability.length - 1]));
+            if (loadAllServices) {
+                this.pokemon = pokemon;
+                Picasso.get().load("https://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png")
+                        .placeholder(R.drawable.ball)
+                        .fit()
+                        .into(imgPoke);
+                forPokemonTypes(pokemon.getTypes());
+                forStats(pokemon.getStats());
+                presenter.getPokemonSpecie(pokemon.getName());
+                pokemonsList.add(pokemon);
             }
+
+            if (!existPokemon(pokemon.getName())) pokemonsList.add(pokemon);
+            if (evolutionAdapter != null) evolutionAdapter.notifyDataSetChanged();
         }
+        loadAllServices = false;
+    }
+
+    private boolean existPokemon(String namePokemon) {
+        for (int i = 0; i < pokemonsList.size(); i++) {
+            if (pokemonsList.get(i).getName().equals(namePokemon)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onPokemonSpecieSucess(Specie specie) {
+        if (specie != null) {
+            String[] evolutionUrl = specie.getEvolutionSpecie().getUrl().split("/");
+            presenter.getPokemonEvolution(Integer.parseInt(evolutionUrl[evolutionUrl.length - 1]));
+        }
+    }
+
+    @Override
+    public void onPokemonEvolutionSucess(Evolution evolution) {
+        for (int i = 0; i < pokemon.getAbilities().size(); i++) {
+            String[] ability = pokemon.getAbilities().get(i).getAbilitySimple().getUrl().split("/");
+            presenter.getAbility(Integer.parseInt(ability[ability.length - 1]));
+        }
+
+        boolean isNull = false;
+        List<Evolution.EvolvesTo> evolutionList = new ArrayList<>();
+        Evolution.EvolvesTo evolves_to = evolution.getEvolves_to();
+        while (!isNull) {
+            evolutionList.add(evolves_to);
+            presenter.getPokemon(evolves_to.getEvolutionInfo().getName());
+            if (evolves_to != null && evolves_to.getEvolves_to().size() > 0) evolves_to = evolves_to.getEvolves_to().get(0);
+            else isNull = true;
+        }
+
+        evolutionAdapter = new EvolutionAdapter(evolutionList, pokemonsList);
+        rvEvolution.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        rvEvolution.setAdapter(evolutionAdapter);
     }
 
     @Override

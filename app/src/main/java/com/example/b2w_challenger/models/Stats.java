@@ -12,5 +12,17 @@ public class Stats {
     public class Stat {
         @SerializedName("name")
         String name;
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    public String getBase_stat() {
+        return base_stat;
+    }
+
+    public Stat getStat() {
+        return stat;
     }
 }
