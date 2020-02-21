@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +24,13 @@ import com.example.b2w_challenger.models.Specie;
 import com.example.b2w_challenger.models.Stats;
 import com.example.b2w_challenger.models.Types;
 import com.example.b2w_challenger.ui.adapter.EvolutionAdapter;
+import com.example.b2w_challenger.ui.adapter.EvolutionItemAdapter;
 import com.example.b2w_challenger.ui.contracts.AbilityContract;
 import com.example.b2w_challenger.ui.presenter.AbilityPresenter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.annotations.Nullable;
@@ -37,11 +40,10 @@ import static com.example.b2w_challenger.services.PokemonService.BASE_URL;
 public class PokemonFragment extends Fragment
         implements AbilityContract.AbilitiesRequestListener {
     private AbilityPresenter presenter;
-    private EvolutionAdapter evolutionAdapter;
+    private EvolutionAdapter evolutionItemAdapter;
     private List<AbilityInfo> abilityList;
-    private List<Pokemon> pokemonsList;
+    private List<Pokemon>[] pokemonsVector;
     private Pokemon pokemon;
-    private boolean loadAllServices = true;
 
     private RecyclerView rvEvolution;
     private ImageView imgPoke;
@@ -90,7 +92,7 @@ public class PokemonFragment extends Fragment
         presenter.getPokemon(pokemon.getName());
 
         abilityList = new ArrayList<>();
-        pokemonsList = new ArrayList<>();
+        pokemonsVector = new List[10];
     }
 
     private void setupView(View view) {
@@ -237,27 +239,38 @@ public class PokemonFragment extends Fragment
     @Override
     public void onPokemonSucess(Pokemon pokemon) {
         if (pokemon != null) {
-            if (loadAllServices) {
-                this.pokemon = pokemon;
-                Picasso.get().load("https://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png")
-                        .placeholder(R.drawable.ball)
-                        .fit()
-                        .into(imgPoke);
-                forPokemonTypes(pokemon.getTypes());
-                forStats(pokemon.getStats());
-                presenter.getPokemonSpecie(pokemon.getName());
-                pokemonsList.add(pokemon);
-            }
-
-            if (!existPokemon(pokemon.getName())) pokemonsList.add(pokemon);
-            if (evolutionAdapter != null) evolutionAdapter.notifyDataSetChanged();
+            this.pokemon = pokemon;
+            Picasso.get().load("https://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png")
+                    .placeholder(R.drawable.ball)
+                    .fit()
+                    .into(imgPoke);
+            forPokemonTypes(pokemon.getTypes());
+            forStats(pokemon.getStats());
+            presenter.getPokemonSpecie(pokemon.getName());
         }
-        loadAllServices = false;
     }
 
-    private boolean existPokemon(String namePokemon) {
-        for (int i = 0; i < pokemonsList.size(); i++) {
-            if (pokemonsList.get(i).getName().equals(namePokemon)) return true;
+    @Override
+    public void onPokemonSucess(Pokemon pokemon, int index) {
+        if (pokemon != null) {
+            if (!existPokemon(pokemon.getName(), index)) {
+                pokemonsVector[index].add(pokemon);
+                Collections.sort(pokemonsVector[index], (Pokemon pokemon1, Pokemon pokemon2) -> {
+                    return pokemon1.getId() - pokemon2.getId();
+                });
+                evolutionItemAdapter.setPokemonList(pokemonsVector);
+                evolutionItemAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private boolean existPokemon(String namePokemon, int index) {
+        if (pokemonsVector[index] != null) {
+            for (int i = 0; i < pokemonsVector[index].size(); i++) {
+                if (pokemonsVector[index].get(i).getName().equals(namePokemon)) return true;
+            }
+        } else {
+            pokemonsVector[index] = new ArrayList<>();
         }
         return false;
     }
@@ -277,19 +290,21 @@ public class PokemonFragment extends Fragment
             presenter.getAbility(Integer.parseInt(ability[ability.length - 1]));
         }
 
-        boolean isNull = false;
-        List<Evolution.EvolvesTo> evolutionList = new ArrayList<>();
-        Evolution.EvolvesTo evolves_to = evolution.getEvolves_to();
-        while (!isNull) {
-            evolutionList.add(evolves_to);
-            presenter.getPokemon(evolves_to.getEvolutionInfo().getName());
-            if (evolves_to != null && evolves_to.getEvolves_to().size() > 0) evolves_to = evolves_to.getEvolves_to().get(0);
-            else isNull = true;
+        for (int i = 0; i < evolution.getEvolves_to().getEvolves_to().size() ; i++) {
+            boolean isNull = false;
+            Evolution.EvolvesTo evolves_to = evolution.getEvolves_to();
+
+            while (!isNull) {
+                presenter.getPokemonVector(evolves_to.getEvolutionInfo().getName(), i);
+                if (evolves_to != null && evolves_to.getEvolves_to().size() > 0)
+                    evolves_to = evolves_to.getEvolves_to().get(i);
+                else isNull = true;
+            }
         }
 
-        evolutionAdapter = new EvolutionAdapter(evolutionList, pokemonsList);
-        rvEvolution.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        rvEvolution.setAdapter(evolutionAdapter);
+        evolutionItemAdapter = new EvolutionAdapter(pokemonsVector, getContext());
+        rvEvolution.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        rvEvolution.setAdapter(evolutionItemAdapter);
     }
 
     @Override

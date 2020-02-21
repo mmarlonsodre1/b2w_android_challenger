@@ -74,6 +74,30 @@ public class AbilityPresenter implements AbilityContract.AbilityPresenterInterfa
     }
 
     @Override
+    public void getPokemonVector(String pokemonName, int index) {
+        abilitiesService = retrofit.create(PokemonService.class);
+        abilitiesService.getPokemonInfo(pokemonName)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<Pokemon>() {
+                    @Override
+                    public void onNext(Pokemon pokemon) {
+                        abilitiesInterface.onPokemonSucess(pokemon, index);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        abilitiesInterface.onError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        abilitiesInterface.onComplete();
+                    }
+                });
+    }
+
+    @Override
     public void getPokemonSpecie(String pokemonName) {
         abilitiesService = retrofit.create(PokemonService.class);
         abilitiesService.getPokemonSpecie(pokemonName)

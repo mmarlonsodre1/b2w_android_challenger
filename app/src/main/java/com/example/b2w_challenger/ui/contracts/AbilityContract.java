@@ -9,6 +9,7 @@ public interface AbilityContract {
     interface AbilitiesRequestListener {
         void onAbilitySucess(AbilityInfo abilityInfo);
         void onPokemonSucess(Pokemon pokemon);
+        void onPokemonSucess(Pokemon pokemon, int index);
         void onPokemonSpecieSucess(Specie specie);
         void onPokemonEvolutionSucess(Evolution evolution);
         void onError(Throwable error);
@@ -18,6 +19,7 @@ public interface AbilityContract {
     interface AbilityPresenterInterface {
         void getAbility(int abilityId);
         void getPokemon(String pokemonName);
+        void getPokemonVector(String pokemonName, int index);
         void getPokemonSpecie(String pokemonName);
         void getPokemonEvolution(int idEvolution);
     }
