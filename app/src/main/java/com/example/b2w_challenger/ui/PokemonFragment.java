@@ -27,6 +27,7 @@ import com.example.b2w_challenger.ui.adapter.EvolutionAdapter;
 import com.example.b2w_challenger.ui.adapter.EvolutionItemAdapter;
 import com.example.b2w_challenger.ui.contracts.AbilityContract;
 import com.example.b2w_challenger.ui.presenter.AbilityPresenter;
+import com.example.b2w_challenger.util.Preferences;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -88,11 +89,15 @@ public class PokemonFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         setupView(view);
 
-        Pokedex.PokemonSimple pokemon = (Pokedex.PokemonSimple) getArguments().getSerializable("POKEMON");
-        presenter.getPokemon(pokemon.getName());
-
         abilityList = new ArrayList<>();
         pokemonsVector = new List[10];
+
+        Pokedex.PokemonSimple pokemon = (Pokedex.PokemonSimple) getArguments().getSerializable("POKEMON");
+        if (pokemon != null) {
+            Pokemon pokemonSave = Preferences.getPokemon(getContext(), pokemon.getName());
+            if (pokemonSave == null) presenter.getPokemon(pokemon.getName());
+            else onPokemonSucess(pokemonSave);
+        }
     }
 
     private void setupView(View view) {
@@ -246,7 +251,11 @@ public class PokemonFragment extends Fragment
                     .into(imgPoke);
             forPokemonTypes(pokemon.getTypes());
             forStats(pokemon.getStats());
-            presenter.getPokemonSpecie(pokemon.getName());
+            evolutionItemAdapter = new EvolutionAdapter(pokemonsVector, getContext());
+
+            Specie specie = Preferences.getSpecie(getContext(), pokemon.getName());
+            if (specie == null) presenter.getPokemonSpecie(pokemon.getName());
+            else onPokemonSpecieSucess(specie);
         }
     }
 
@@ -260,6 +269,7 @@ public class PokemonFragment extends Fragment
                 });
                 evolutionItemAdapter.setPokemonList(pokemonsVector);
                 evolutionItemAdapter.notifyDataSetChanged();
+                Preferences.savePokemon(getContext(), pokemon);
             }
         }
     }
@@ -278,33 +288,53 @@ public class PokemonFragment extends Fragment
     @Override
     public void onPokemonSpecieSucess(Specie specie) {
         if (specie != null) {
+            if (Preferences.getSpecie(getContext(), specie.getName()) == null)
+                Preferences.saveSpecie(getContext(), specie);
+
             String[] evolutionUrl = specie.getEvolutionSpecie().getUrl().split("/");
-            presenter.getPokemonEvolution(Integer.parseInt(evolutionUrl[evolutionUrl.length - 1]));
+
+            Evolution evolution = Preferences.getEvolution(getContext(),
+                    Integer.parseInt(evolutionUrl[evolutionUrl.length - 1]));
+
+            if (evolution == null)
+                presenter.getPokemonEvolution(Integer.parseInt(
+                        evolutionUrl[evolutionUrl.length - 1]));
+            else onPokemonEvolutionSucess(evolution);
         }
     }
 
     @Override
     public void onPokemonEvolutionSucess(Evolution evolution) {
-        for (int i = 0; i < pokemon.getAbilities().size(); i++) {
-            String[] ability = pokemon.getAbilities().get(i).getAbilitySimple().getUrl().split("/");
-            presenter.getAbility(Integer.parseInt(ability[ability.length - 1]));
-        }
+        if (evolution != null) {
+            if (Preferences.getEvolution(getContext(), evolution.getId()) == null)
+                Preferences.saveEvolution(getContext(), evolution);
 
-        for (int i = 0; i < evolution.getEvolves_to().getEvolves_to().size() ; i++) {
-            boolean isNull = false;
-            Evolution.EvolvesTo evolves_to = evolution.getEvolves_to();
-
-            while (!isNull) {
-                presenter.getPokemonVector(evolves_to.getEvolutionInfo().getName(), i);
-                if (evolves_to != null && evolves_to.getEvolves_to().size() > 0)
-                    evolves_to = evolves_to.getEvolves_to().get(i);
-                else isNull = true;
+            for (int i = 0; i < pokemon.getAbilities().size(); i++) {
+                String[] ability = pokemon.getAbilities().get(i).getAbilitySimple().getUrl().split("/");
+                presenter.getAbility(Integer.parseInt(ability[ability.length - 1]));
             }
-        }
 
-        evolutionItemAdapter = new EvolutionAdapter(pokemonsVector, getContext());
-        rvEvolution.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        rvEvolution.setAdapter(evolutionItemAdapter);
+            for (int i = 0; i < evolution.getEvolves_to().getEvolves_to().size(); i++) {
+                boolean isNull = false;
+                Evolution.EvolvesTo evolves_to = evolution.getEvolves_to();
+
+                while (!isNull) {
+                    Pokemon pokemonSave = Preferences.getPokemon(getContext(),
+                            evolves_to.getEvolutionInfo().getName());
+
+                    if (pokemonSave == null) presenter.getPokemonVector(
+                            evolves_to.getEvolutionInfo().getName(), i);
+                    else onPokemonSucess(pokemonSave, i);
+
+                    if (evolves_to != null && evolves_to.getEvolves_to().size() > 0)
+                        evolves_to = evolves_to.getEvolves_to().get(i);
+                    else isNull = true;
+                }
+            }
+
+            rvEvolution.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+            rvEvolution.setAdapter(evolutionItemAdapter);
+        }
     }
 
     @Override

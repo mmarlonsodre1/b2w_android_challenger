@@ -48,7 +48,7 @@ public class EvolutionAdapter extends RecyclerView.Adapter<EvolutionAdapter.View
 
     public void setPokemonList(List<Pokemon>[] pokemonList) {
         this.pokemonList = pokemonList;
-        evolutionItemAdapter.notifyDataSetChanged();
+        if (evolutionItemAdapter != null) evolutionItemAdapter.notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

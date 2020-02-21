@@ -6,6 +6,9 @@ public class Specie {
     @SerializedName("evolution_chain")
     EvolutionSpecie evolutionSpecie;
 
+    @SerializedName("name")
+    String name;
+
     public class EvolutionSpecie {
         @SerializedName("url")
         String url;
@@ -17,5 +20,9 @@ public class Specie {
 
     public EvolutionSpecie getEvolutionSpecie() {
         return evolutionSpecie;
+    }
+
+    public String getName() {
+        return name;
     }
 }

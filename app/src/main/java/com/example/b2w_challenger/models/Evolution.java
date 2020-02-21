@@ -8,6 +8,9 @@ public class Evolution {
     @SerializedName("chain")
     EvolvesTo evolves_to;
 
+    @SerializedName("id")
+    int id;
+
     public class EvolvesTo{
         @SerializedName("evolves_to")
         List<EvolvesTo> evolves_to;
@@ -35,5 +38,9 @@ public class Evolution {
 
     public EvolvesTo getEvolves_to() {
         return evolves_to;
+    }
+
+    public int getId() {
+        return id;
     }
 }

@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -15,27 +14,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.b2w_challenger.MyApplication;
 import com.example.b2w_challenger.R;
 import com.example.b2w_challenger.models.Pokedex;
-import com.example.b2w_challenger.models.Types;
 import com.example.b2w_challenger.models.viewModels.PokedexViewModel;
 import com.example.b2w_challenger.ui.adapter.PokedexAdapter;
 import com.example.b2w_challenger.ui.contracts.PokedexContract;
 import com.example.b2w_challenger.ui.presenter.PokedexPresenter;
-import com.squareup.picasso.Picasso;
+import com.example.b2w_challenger.util.Preferences;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static androidx.core.content.ContextCompat.getDrawable;
 import static com.example.b2w_challenger.services.PokemonService.BASE_URL;
 
 public class HomeFragment extends Fragment
@@ -68,8 +62,8 @@ public class HomeFragment extends Fragment
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        setupView(view);
         setupLiveData();
+        setupView(view);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -80,9 +74,14 @@ public class HomeFragment extends Fragment
         initScrollListener();
         rvPokemons.setAdapter(pokedexAdapter);
 
+        Pokedex pokedex = Preferences.getPokedex(getContext());
+
         if (pokedexAdapter.getItemCount() == 0) {
-            progressBar.setVisibility(View.VISIBLE);
-            presenter.getPokedex();
+            if (pokedex == null) {
+                progressBar.setVisibility(View.VISIBLE);
+                presenter.getPokedex();
+            }
+            else onPokedexSucess(pokedex);
         }
     }
 
@@ -91,6 +90,7 @@ public class HomeFragment extends Fragment
         final Observer<Pokedex> pokedexObserver = new Observer<Pokedex>() {
             @Override
             public void onChanged(Pokedex pokedex) {
+                Preferences.savePokedex(getContext(), pokedex);
                 pokedexAdapter.setPokemonList(pokedex.getResults());
                 pokedexAdapter.notifyDataSetChanged();
             }
@@ -140,6 +140,7 @@ public class HomeFragment extends Fragment
     public void onPokedexSucess(Pokedex pokedex) {
         nextPage = pokedex.getNext();
         pokedexViewModel.getPokedex().setValue(pokedex);
+        Preferences.savePokedex(getContext(), pokedex);
     }
 
     @Override
