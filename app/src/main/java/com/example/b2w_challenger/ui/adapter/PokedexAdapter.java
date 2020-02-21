@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,7 +40,7 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.ViewHold
 
         String[] url = pokemonList.get(position).getUrl().split("/");
         Picasso.get().load("https://pokeres.bastionbot.org/images/pokemon/" + url[url.length - 1] + ".png")
-                .placeholder(R.drawable.ball)
+                .placeholder(R.drawable.ic_ball)
                 .fit()
                 .into(holder.imgPoke);
     }

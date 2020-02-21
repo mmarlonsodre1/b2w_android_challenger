@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.b2w_challenger.ui.HomeFragment"
-        android:label="fragment_home"
+        android:label="Pokedex"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_pokemonFragment"
@@ -22,7 +22,7 @@
     <fragment
         android:id="@+id/pokemonFragment"
         android:name="com.example.b2w_challenger.ui.PokemonFragment"
-        android:label="fragment_pokemon"
+        android:label="Pokemon"
         tools:layout="@layout/fragment_pokemon" />
 
 </navigation>

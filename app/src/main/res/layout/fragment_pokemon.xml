@@ -10,16 +10,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/img_poke"
-            android:layout_width="250dp"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_image_pokemon"
+            android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:layout_marginTop="48dp"
-            android:src="@drawable/ball"
+            android:layout_marginTop="@dimen/spaccing_16"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tb_dot"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            app:tabBackground="@drawable/carousel_page_selector"
+            app:tabGravity="center"
+            app:tabIndicatorColor="@color/transparent"
+            app:tabIndicatorHeight="0dp"
+            app:tabRippleColor="@null"
+            app:layout_constraintBottom_toBottomOf="@+id/vp_image_pokemon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <LinearLayout
             android:id="@+id/ll_types"
@@ -32,7 +43,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_poke">
+            app:layout_constraintTop_toBottomOf="@+id/vp_image_pokemon">
 
             <ImageView
                 android:id="@+id/img_bug"
@@ -361,6 +372,6 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_special_defense" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

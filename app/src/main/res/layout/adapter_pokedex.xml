@@ -9,7 +9,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="@dimen/spaccing_16"
-        android:src="@drawable/ball"
+        android:src="@drawable/ic_ball"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

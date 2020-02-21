@@ -35,7 +35,7 @@ public class EvolutionItemAdapter extends RecyclerView.Adapter<EvolutionItemAdap
         holder.txtName.setText(pokemonList.get(position).getName());
         Picasso.get().load("https://pokeres.bastionbot.org/images/pokemon/" +
                 String.valueOf(pokemonList.get(position).getId()) + ".png")
-                .placeholder(R.drawable.ball)
+                .placeholder(R.drawable.ic_ball)
                 .fit()
                 .into(holder.imgPoke);
 
