@@ -72,6 +72,7 @@ public class PokemonFragment extends Fragment
     private ImageView imgSteel;
     private ImageView imgWater;
 
+    private TextView tvPokeName;
     private TextView tvHP;
     private TextView tvAttack;
     private TextView tvDefense;
@@ -129,6 +130,7 @@ public class PokemonFragment extends Fragment
         imgSteel = view.findViewById(R.id.img_steel);
         imgWater = view.findViewById(R.id.img_water);
 
+        tvPokeName = view.findViewById(R.id.tv_poke_name);
         tvHP = view.findViewById(R.id.tv_hp);
         tvAttack = view.findViewById(R.id.tv_attack);
         tvDefense = view.findViewById(R.id.tv_defense);
@@ -265,6 +267,7 @@ public class PokemonFragment extends Fragment
 
             setupCarousel();
 
+            tvPokeName.setText(pokemon.getName());
             forPokemonTypes(pokemon.getTypes());
             forStats(pokemon.getStats());
             evolutionAdapter = new EvolutionAdapter(pokemonsVector, getContext());
