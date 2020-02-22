@@ -1,6 +1,12 @@
 package com.example.b2w_challenger.ui;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import androidx.appcompat.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,15 +17,10 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
 import com.example.b2w_challenger.MyApplication;
 import com.example.b2w_challenger.R;
 import com.example.b2w_challenger.models.Pokedex;
+import com.example.b2w_challenger.models.Pokemon;
 import com.example.b2w_challenger.models.viewModels.PokedexViewModel;
 import com.example.b2w_challenger.ui.adapter.PokedexAdapter;
 import com.example.b2w_challenger.ui.contracts.PokedexContract;
@@ -28,20 +29,23 @@ import com.example.b2w_challenger.util.Preferences;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import static com.example.b2w_challenger.services.PokemonService.BASE_URL;
+import static com.example.b2w_challenger.services.PokemonService.BASE_API_URL;
 
 public class HomeFragment extends Fragment
         implements PokedexContract.PokedexRequestListener,
-        PokedexContract.PokedexClickListener {
+        PokedexContract.PokedexClickListener, SearchView.OnQueryTextListener {
 
     private RecyclerView rvPokemons;
     private ProgressBar progressBar;
     private PokedexAdapter pokedexAdapter;
     private boolean isLoading;
+    private boolean isSearch;
     private PokedexPresenter presenter;
     private PokedexViewModel pokedexViewModel;
+    private SearchView svPokemon;
 
     private String nextPage;
 
@@ -55,7 +59,7 @@ public class HomeFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         presenter = new PokedexPresenter(this);
-        ((MyApplication) getActivity().getApplication()).setServiceComponent(BASE_URL);
+        ((MyApplication) getActivity().getApplication()).setServiceComponent(BASE_API_URL);
         ((MyApplication) getActivity().getApplication()).getServiceComponent().inject(presenter);
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
@@ -68,30 +72,33 @@ public class HomeFragment extends Fragment
     }
 
     private void setupView(View view) {
+        svPokemon = view.findViewById(R.id.sv_pokemon);
         progressBar = view.findViewById(R.id.progress_bar);
         rvPokemons = view.findViewById(R.id.rv_pokemons);
+
         rvPokemons.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         initScrollListener();
         rvPokemons.setAdapter(pokedexAdapter);
 
-        Pokedex pokedex = Preferences.getPokedex(getContext());
+        svPokemon.setOnQueryTextListener(this);
 
-        if (pokedexAdapter.getItemCount() == 0) {
-            if (pokedex == null) {
-                progressBar.setVisibility(View.VISIBLE);
-                presenter.getPokedex();
-            }
-            else onPokedexSucess(pokedex);
+        if (pokedexAdapter.getItemCount() == 0) setupPokemonList();
+    }
+
+    private void setupPokemonList() {
+        Pokedex pokedex = Preferences.getPokedex(getContext());
+        if (pokedex == null) {
+            presenter.getPokedex();
         }
+        else onPokedexSucess(pokedex);
     }
 
     private void setupLiveData() {
         pokedexViewModel = ViewModelProviders.of(this).get(PokedexViewModel.class);
-        final Observer<Pokedex> pokedexObserver = new Observer<Pokedex>() {
+        final Observer<List<Pokedex.PokemonSimple>> pokedexObserver = new Observer<List<Pokedex.PokemonSimple>>() {
             @Override
-            public void onChanged(Pokedex pokedex) {
-                Preferences.savePokedex(getContext(), pokedex);
-                pokedexAdapter.setPokemonList(pokedex.getResults());
+            public void onChanged(List<Pokedex.PokemonSimple> pokemonSimpleList) {
+                pokedexAdapter.setPokemonList(pokemonSimpleList);
                 pokedexAdapter.notifyDataSetChanged();
             }
         };
@@ -124,12 +131,15 @@ public class HomeFragment extends Fragment
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
 
                 if (!isLoading) {
-                    if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == pokedexViewModel.getPokedex().getValue().getResults().size() - 1) {
-                        isLoading = true;
-                        progressBar.setVisibility(View.VISIBLE);
-                        presenter.getNextPokedex(Integer.parseInt(
-                                getQueryMap(nextPage).get("offset")),
-                                Integer.parseInt(getQueryMap(nextPage).get("limit")));
+                    if (!isSearch) {
+                        if (linearLayoutManager != null
+                                && linearLayoutManager.findLastCompletelyVisibleItemPosition()
+                                == pokedexViewModel.getPokedex().getValue().size() - 1) {
+                            isLoading = true;
+                            presenter.getNextPokedex(Integer.parseInt(
+                                    getQueryMap(nextPage).get("offset")),
+                                    Integer.parseInt(getQueryMap(nextPage).get("limit")));
+                        }
                     }
                 }
             }
@@ -137,27 +147,50 @@ public class HomeFragment extends Fragment
     }
 
     @Override
+    public void onBefore() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onPokedexSucess(Pokedex pokedex) {
         nextPage = pokedex.getNext();
-        pokedexViewModel.getPokedex().setValue(pokedex);
+        pokedexViewModel.getPokedex().setValue(pokedex.getResults());
         Preferences.savePokedex(getContext(), pokedex);
     }
 
     @Override
     public void onNextPokedexSucess(Pokedex pokedex) {
         nextPage = pokedex.getNext();
-        pokedexViewModel.getPokedex().getValue().getResults().addAll(pokedex.getResults());
+        pokedexViewModel.getPokedex().getValue().addAll(pokedex.getResults());
         pokedexViewModel.getPokedex().setValue(pokedexViewModel.getPokedex().getValue());
+        Preferences.savePokedex(getContext(), pokedex);
+    }
+
+    @Override
+    public void onPokemonSucess(Pokemon pokemon) {
+        List<Pokedex.PokemonSimple> pokemonList = new ArrayList<>();
+        Pokedex.PokemonSimple pokemonSimple = new Pokedex.PokemonSimple(
+                pokemon.getName(), pokemon.getId());
+        pokemonList.add(pokemonSimple);
+        pokedexViewModel.getPokedex().setValue(pokemonList);
     }
 
     @Override
     public void onError(Throwable error) {
-        Toast.makeText(getContext(), "Erro ao carregar", Toast.LENGTH_SHORT);
+        Toast.makeText(getContext(), "Erro ao carregar", Toast.LENGTH_SHORT).show();
+        isLoading = false;
+        if (progressBar.isShown()) progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void OnPokemonError(Throwable error) {
+        Toast.makeText(getContext(), getString(R.string.no_pokemon), Toast.LENGTH_SHORT).show();
+        isLoading = false;
+        if (progressBar.isShown()) progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void onComplete() {
-        Toast.makeText(getContext(), "Completou", Toast.LENGTH_SHORT);
         isLoading = false;
         if (progressBar.isShown()) progressBar.setVisibility(View.GONE);
     }
@@ -168,5 +201,21 @@ public class HomeFragment extends Fragment
         bundle.putSerializable("POKEMON", pokemon);
 
         Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_pokemonFragment, bundle);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        isSearch = true;
+        presenter.getPokemon(query);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        isSearch = false;
+        if (newText.equals("")) {
+            setupPokemonList();
+        }
+        return false;
     }
 }

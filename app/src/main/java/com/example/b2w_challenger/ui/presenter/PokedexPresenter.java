@@ -1,6 +1,7 @@
 package com.example.b2w_challenger.ui.presenter;
 
 import com.example.b2w_challenger.models.Pokedex;
+import com.example.b2w_challenger.models.Pokemon;
 import com.example.b2w_challenger.services.PokemonService;
 import com.example.b2w_challenger.ui.contracts.PokedexContract;
 
@@ -30,6 +31,12 @@ public class PokedexPresenter implements PokedexContract.PokedexPresenterInterfa
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<Pokedex>() {
                     @Override
+                    protected void onStart() {
+                        super.onStart();
+                        pokedexInterface.onBefore();
+                    }
+
+                    @Override
                     public void onNext(Pokedex pokedex) {
                         pokedexInterface.onPokedexSucess(pokedex);
                     }
@@ -54,6 +61,12 @@ public class PokedexPresenter implements PokedexContract.PokedexPresenterInterfa
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<Pokedex>() {
                     @Override
+                    protected void onStart() {
+                        super.onStart();
+                        pokedexInterface.onBefore();
+                    }
+
+                    @Override
                     public void onNext(Pokedex pokedex) {
                         pokedexInterface.onNextPokedexSucess(pokedex);
                     }
@@ -61,6 +74,36 @@ public class PokedexPresenter implements PokedexContract.PokedexPresenterInterfa
                     @Override
                     public void onError(Throwable e) {
                         pokedexInterface.onError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        pokedexInterface.onComplete();
+                    }
+                });
+    }
+
+    @Override
+    public void getPokemon(String pokemonName) {
+        pokemonService = retrofit.create(PokemonService.class);
+        pokemonService.getPokemonInfo(pokemonName)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<Pokemon>() {
+                    @Override
+                    protected void onStart() {
+                        super.onStart();
+                        pokedexInterface.onBefore();
+                    }
+
+                    @Override
+                    public void onNext(Pokemon pokemon) {
+                        pokedexInterface.onPokemonSucess(pokemon);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        pokedexInterface.OnPokemonError(e);
                     }
 
                     @Override

@@ -43,12 +43,19 @@ public class Pokedex {
         this.results = results;
     }
 
-    public class PokemonSimple implements Serializable {
+    public static class PokemonSimple implements Serializable {
+        public PokemonSimple(String name, int id) {
+            this.name = name;
+            this.id = id;
+        }
+
         @SerializedName("name")
         String name;
 
         @SerializedName("url")
         String url;
+
+        Integer id;
 
         public String getName() {
             return name;
@@ -64,6 +71,10 @@ public class Pokedex {
 
         public void setUrl(String url) {
             this.url = url;
+        }
+
+        public int getId() {
+            return id;
         }
     }
 }

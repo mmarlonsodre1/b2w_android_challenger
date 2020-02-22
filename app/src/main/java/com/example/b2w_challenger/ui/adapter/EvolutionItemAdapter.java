@@ -15,6 +15,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import static com.example.b2w_challenger.services.PokemonService.BASE_IMAGE_URL;
+
 public class EvolutionItemAdapter extends RecyclerView.Adapter<EvolutionItemAdapter.ViewHolder> {
     private List<Pokemon> pokemonList;
 
@@ -33,7 +35,7 @@ public class EvolutionItemAdapter extends RecyclerView.Adapter<EvolutionItemAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txtName.setText(pokemonList.get(position).getName());
-        Picasso.get().load("https://pokeres.bastionbot.org/images/pokemon/" +
+        Picasso.get().load(BASE_IMAGE_URL +
                 String.valueOf(pokemonList.get(position).getId()) + ".png")
                 .placeholder(R.drawable.ic_ball)
                 .fit()

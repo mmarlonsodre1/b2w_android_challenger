@@ -36,7 +36,8 @@ import java.util.List;
 
 import io.reactivex.annotations.Nullable;
 
-import static com.example.b2w_challenger.services.PokemonService.BASE_URL;
+import static com.example.b2w_challenger.services.PokemonService.BASE_API_URL;
+import static com.example.b2w_challenger.services.PokemonService.BASE_IMAGE_URL;
 
 public class PokemonFragment extends Fragment
         implements AbilityContract.AbilitiesRequestListener {
@@ -84,7 +85,7 @@ public class PokemonFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         presenter = new AbilityPresenter(this);
-        ((MyApplication) getActivity().getApplication()).setServiceComponent(BASE_URL);
+        ((MyApplication) getActivity().getApplication()).setServiceComponent(BASE_API_URL);
         ((MyApplication) getActivity().getApplication()).getServiceComponent().inject(presenter);
 
         return inflater.inflate(R.layout.fragment_pokemon, container, false);
@@ -140,7 +141,7 @@ public class PokemonFragment extends Fragment
     }
 
     private void setupCarousel() {
-        String urlImageDefault = "https://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png";
+        String urlImageDefault = BASE_IMAGE_URL + pokemon.getId() + ".png";
         imagePokemonAdapter = new ImagePokemonAdapter(getContext(), pokemon.getSprites(), urlImageDefault);
         vpImagePokemon.setAdapter(imagePokemonAdapter);
 

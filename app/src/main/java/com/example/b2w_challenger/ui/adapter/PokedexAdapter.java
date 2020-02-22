@@ -16,6 +16,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import static com.example.b2w_challenger.services.PokemonService.BASE_IMAGE_URL;
+
 public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.ViewHolder> {
     private List<Pokedex.PokemonSimple> pokemonList;
     private final PokedexContract.PokedexClickListener pokedexClickListener;
@@ -38,8 +40,12 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.ViewHold
         holder.txtName.setText(pokemonList.get(position).getName());
         holder.bind(getPokemon(position));
 
-        String[] url = pokemonList.get(position).getUrl().split("/");
-        Picasso.get().load("https://pokeres.bastionbot.org/images/pokemon/" + url[url.length - 1] + ".png")
+        String id;
+        if (pokemonList.get(position).getUrl() != null) {
+            String[] url = pokemonList.get(position).getUrl().split("/");
+            id = url[url.length - 1];
+        } else id = String.valueOf(pokemonList.get(position).getId());
+        Picasso.get().load(BASE_IMAGE_URL + id + ".png")
                 .placeholder(R.drawable.ic_ball)
                 .fit()
                 .into(holder.imgPoke);

@@ -12,7 +12,8 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface PokemonService {
-    String BASE_URL = "https://pokeapi.co/api/v2/";
+    public static String BASE_API_URL = "https://pokeapi.co/api/v2/";
+    public static String BASE_IMAGE_URL = "https://pokeres.bastionbot.org/images/pokemon/";
 
     @GET("pokemon")
     Observable<Pokedex> getPokedex();
