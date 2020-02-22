@@ -27,9 +27,7 @@
             android:layout_marginTop="@dimen/spaccing_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
-
-        </androidx.viewpager.widget.ViewPager>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tb_dot"
@@ -239,6 +237,7 @@
             android:id="@+id/rv_evolution"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:overScrollMode="never"
             android:layout_marginTop="@dimen/spaccing_24"
             android:layout_marginBottom="@dimen/spaccing_24"
             app:layout_constraintTop_toBottomOf="@+id/ll_types" />

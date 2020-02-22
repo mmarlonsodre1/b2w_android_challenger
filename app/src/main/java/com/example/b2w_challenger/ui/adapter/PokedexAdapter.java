@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.fragment.FragmentNavigator;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.b2w_challenger.R;
@@ -79,8 +80,10 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.ViewHold
         public void bind(Pokedex.PokemonSimple pokemon) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    pokedexClickListener.onPokemonClick(pokemon, v);
+                public void onClick(View view) {
+                    imgPoke.setTransitionName(pokemon.getName());
+                    FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder().addSharedElement(imgPoke, pokemon.getName()).build();
+                    pokedexClickListener.onPokemonClick(pokemon, view, extras);
                 }
             });
         }

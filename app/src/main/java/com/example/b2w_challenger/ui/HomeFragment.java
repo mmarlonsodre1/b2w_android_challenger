@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.FragmentNavigator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -196,11 +197,14 @@ public class HomeFragment extends Fragment
     }
 
     @Override
-    public void onPokemonClick(Pokedex.PokemonSimple pokemon, View view) {
+    public void onPokemonClick(Pokedex.PokemonSimple pokemon, View view,
+                               FragmentNavigator.Extras extras) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("POKEMON", pokemon);
-
-        Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_pokemonFragment, bundle);
+        Navigation.findNavController(view).navigate(
+                R.id.action_homeFragment_to_pokemonFragment, bundle, null, extras);
+        setupPokemonList();
+        svPokemon.setQuery("", false);
     }
 
     @Override

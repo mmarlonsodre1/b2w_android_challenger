@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.TransitionInflater;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -82,6 +83,12 @@ public class PokemonFragment extends Fragment
     private TextView tvSpeed;
 
     @Override
+    public void onCreate(@androidx.annotation.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move).setDuration(350));
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         presenter = new AbilityPresenter(this);
@@ -105,6 +112,8 @@ public class PokemonFragment extends Fragment
             if (pokemonSave == null) presenter.getPokemon(pokemon.getName());
             else onPokemonSucess(pokemonSave);
         }
+
+        vpImagePokemon.setTransitionName(pokemon.getName());
     }
 
     private void setupView(View view) {

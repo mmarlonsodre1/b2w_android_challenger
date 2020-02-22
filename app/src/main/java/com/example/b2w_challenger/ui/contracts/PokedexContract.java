@@ -2,6 +2,8 @@ package com.example.b2w_challenger.ui.contracts;
 
 import android.view.View;
 
+import androidx.navigation.fragment.FragmentNavigator;
+
 import com.example.b2w_challenger.models.Pokedex;
 import com.example.b2w_challenger.models.Pokemon;
 
@@ -23,6 +25,7 @@ public interface PokedexContract {
     }
 
     interface PokedexClickListener {
-        void onPokemonClick(Pokedex.PokemonSimple pokemon, View view);
+        void onPokemonClick(Pokedex.PokemonSimple pokemon, View view,
+                            FragmentNavigator.Extras extras);
     }
 }
