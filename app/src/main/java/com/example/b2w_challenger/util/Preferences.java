@@ -3,6 +3,7 @@ package com.example.b2w_challenger.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.b2w_challenger.models.Ability.AbilityInfo;
 import com.example.b2w_challenger.models.Pokemon.Ability;
 import com.example.b2w_challenger.models.Evolution.Evolution;
 import com.example.b2w_challenger.models.Pokedex.Pokedex;
@@ -228,21 +229,20 @@ public class Preferences {
     //Todo: Finish Evolution
 
     //Todo: Ability
-    private static boolean existAbility(List<Ability> abilityList, Ability ability) {
+    private static boolean existAbility(List<AbilityInfo> abilityList, AbilityInfo ability) {
         if (abilityList != null) {
-            for (Ability ability1 : abilityList) {
-                if (ability1.getAbilitySimple().getName().equals(
-                        ability.getAbilitySimple().getName())) return true;
+            for (AbilityInfo ability1 : abilityList) {
+                if (ability1.getId() ==  ability.getId()) return true;
             }
         }
         return false;
     }
 
-    public static void saveAbility(Context context, Ability ability){
+    public static void saveAbility(Context context, AbilityInfo ability){
         if(preferencesCookies == null){
             preferencesCookies = getInstancePreferenceCookies(context);
         }
-        List<Ability> abilityList = getAbilityList(context);
+        List<AbilityInfo> abilityList = getAbilityList(context);
         if (!existAbility(abilityList, ability)) {
             abilityList.add(ability);
             SharedPreferences.Editor editor = preferencesCookies.edit();
@@ -253,30 +253,30 @@ public class Preferences {
         }
     }
 
-    public static ArrayList<Ability> getAbilityList(Context context) {
+    public static ArrayList<AbilityInfo> getAbilityList(Context context) {
         if(preferencesCookies == null){
             preferencesCookies = getInstancePreferenceCookies(context);
         }
-        List<Ability> abilityList;
+        List<AbilityInfo> abilityList;
         if (preferencesCookies.contains(ABILITY_LIST)) {
             String json = preferencesCookies.getString(ABILITY_LIST, null);
             Gson gson = new Gson();
-            Ability[] abilityVector = gson.fromJson(json,
-                    Ability[].class);
+            AbilityInfo[] abilityVector = gson.fromJson(json,
+                    AbilityInfo[].class);
             abilityList = Arrays.asList(abilityVector);
             abilityList = new ArrayList<>(abilityList);
-            return (ArrayList<Ability>) abilityList;
+            return (ArrayList<AbilityInfo>) abilityList;
         }
         return new ArrayList<>();
     }
 
-    public static Ability getAbility(Context context, String nameAbility){
+    public static AbilityInfo getAbility(Context context, int idAbility){
         if(preferencesCookies == null){
             preferencesCookies = getInstancePreferenceCookies(context);
         }
-        List<Ability> abilityList = getAbilityList(context);
-        for (Ability ability : abilityList) {
-            if (ability.getAbilitySimple().getName().equals(nameAbility))
+        List<AbilityInfo> abilityList = getAbilityList(context);
+        for (AbilityInfo ability : abilityList) {
+            if (ability.getId() == idAbility )
                 return ability;
         }
         return null;

@@ -1,8 +1,11 @@
 package com.example.b2w_challenger.ui;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 import com.example.b2w_challenger.MyApplication;
 import com.example.b2w_challenger.R;
 import com.example.b2w_challenger.models.Ability.AbilityInfo;
+import com.example.b2w_challenger.models.Ability.EffectEntrie;
 import com.example.b2w_challenger.models.Evolution.Evolution;
 import com.example.b2w_challenger.models.Evolution.EvolvesTo;
 import com.example.b2w_challenger.models.Pokedex.PokemonSimple;
@@ -25,6 +29,7 @@ import com.example.b2w_challenger.models.Pokemon.Pokemon;
 import com.example.b2w_challenger.models.Specie.Specie;
 import com.example.b2w_challenger.models.Pokemon.Stats;
 import com.example.b2w_challenger.models.Pokemon.Types;
+import com.example.b2w_challenger.ui.adapter.AbilityAdapter;
 import com.example.b2w_challenger.ui.adapter.EvolutionAdapter;
 import com.example.b2w_challenger.ui.adapter.ImagePokemonAdapter;
 import com.example.b2w_challenger.ui.contracts.AbilityContract;
@@ -42,16 +47,19 @@ import static com.example.b2w_challenger.services.PokemonService.BASE_API_URL;
 import static com.example.b2w_challenger.services.PokemonService.BASE_IMAGE_URL;
 
 public class PokemonFragment extends Fragment
-        implements AbilityContract.AbilitiesRequestListener {
+        implements AbilityContract.AbilitiesRequestListener, AbilityContract.AbilityClickListener {
     private AbilityPresenter presenter;
     private List<AbilityInfo> abilityList;
     private List<Pokemon>[] pokemonsVector;
     private Pokemon pokemon;
+    private Context context;
 
     private EvolutionAdapter evolutionAdapter;
     private ImagePokemonAdapter imagePokemonAdapter;
+    private AbilityAdapter abilityAdapter;
 
     private RecyclerView rvEvolution;
+    private RecyclerView rvAbilities;
     private ViewPager vpImagePokemon;
 
     private TabLayout tbDots;
@@ -75,6 +83,7 @@ public class PokemonFragment extends Fragment
     private ImageView imgSteel;
     private ImageView imgWater;
 
+    private TextView tvPokeId;
     private TextView tvPokeName;
     private TextView tvHP;
     private TextView tvAttack;
@@ -86,7 +95,8 @@ public class PokemonFragment extends Fragment
     @Override
     public void onCreate(@androidx.annotation.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move).setDuration(350));
+        context = getContext();
+        setSharedElementEnterTransition(TransitionInflater.from(context).inflateTransition(android.R.transition.move).setDuration(350));
     }
 
     @Override
@@ -109,7 +119,7 @@ public class PokemonFragment extends Fragment
 
         PokemonSimple pokemon = (PokemonSimple) getArguments().getSerializable("POKEMON");
         if (pokemon != null) {
-            Pokemon pokemonSave = Preferences.getPokemon(getContext(), pokemon.getName());
+            Pokemon pokemonSave = Preferences.getPokemon(context, pokemon.getName());
             if (pokemonSave == null) presenter.getPokemon(pokemon.getName());
             else onPokemonSucess(pokemonSave);
         }
@@ -119,6 +129,7 @@ public class PokemonFragment extends Fragment
 
     private void setupView(View view) {
         rvEvolution = view.findViewById(R.id.rv_evolution);
+        rvAbilities = view.findViewById(R.id.rv_abilities);
         vpImagePokemon = view.findViewById(R.id.vp_image_pokemon);
         tbDots = view.findViewById(R.id.tb_dot);
 
@@ -141,6 +152,7 @@ public class PokemonFragment extends Fragment
         imgSteel = view.findViewById(R.id.img_steel);
         imgWater = view.findViewById(R.id.img_water);
 
+        tvPokeId = view.findViewById(R.id.tv_poke_id);
         tvPokeName = view.findViewById(R.id.tv_poke_name);
         tvHP = view.findViewById(R.id.tv_hp);
         tvAttack = view.findViewById(R.id.tv_attack);
@@ -148,16 +160,19 @@ public class PokemonFragment extends Fragment
         tvSpecialAttack = view.findViewById(R.id.tv_special_attack);
         tvSpecialDefense = view.findViewById(R.id.tv_special_defense);
         tvSpeed = view.findViewById(R.id.tv_speed);
+
+        abilityAdapter = new AbilityAdapter(abilityList, this);
+        rvAbilities.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        rvAbilities.setAdapter(abilityAdapter);
     }
 
     private void setupCarousel() {
         String urlImageDefault = BASE_IMAGE_URL + pokemon.getId() + ".png";
-        imagePokemonAdapter = new ImagePokemonAdapter(getContext(), pokemon.getSprites(), urlImageDefault);
+        imagePokemonAdapter = new ImagePokemonAdapter(context, pokemon.getSprites(), urlImageDefault);
         vpImagePokemon.setAdapter(imagePokemonAdapter);
 
         tbDots.setupWithViewPager(vpImagePokemon, true);
         tbDots.setVisibility(View.VISIBLE);
-
     }
 
     private void forPokemonTypes(List<Types> types) {
@@ -267,7 +282,13 @@ public class PokemonFragment extends Fragment
     @Override
     public void onAbilitySucess(AbilityInfo abilityInfo) {
         if (abilityInfo != null) {
+            if (Preferences.getAbility(context, abilityInfo.getId()) == null) {
+                Preferences.saveAbility(context, abilityInfo);
+            }
+
             abilityList.add(abilityInfo);
+            abilityAdapter.setAbilitiesList(abilityList);
+            abilityAdapter.notifyDataSetChanged();
         }
     }
 
@@ -278,12 +299,13 @@ public class PokemonFragment extends Fragment
 
             setupCarousel();
 
+            tvPokeId.setText("#" + String.valueOf(pokemon.getId()));
             tvPokeName.setText(pokemon.getName());
             forPokemonTypes(pokemon.getTypes());
             forStats(pokemon.getStats());
-            evolutionAdapter = new EvolutionAdapter(pokemonsVector, getContext());
+            evolutionAdapter = new EvolutionAdapter(pokemonsVector, context);
 
-            Specie specie = Preferences.getSpecie(getContext(), pokemon.getName());
+            Specie specie = Preferences.getSpecie(context, pokemon.getName());
             if (specie == null) presenter.getPokemonSpecie(pokemon.getName());
             else onPokemonSpecieSucess(specie);
         }
@@ -299,7 +321,7 @@ public class PokemonFragment extends Fragment
                 });
                 evolutionAdapter.setPokemonList(pokemonsVector);
                 evolutionAdapter.notifyDataSetChanged();
-                Preferences.savePokemon(getContext(), pokemon);
+                Preferences.savePokemon(context, pokemon);
             }
         }
     }
@@ -318,12 +340,12 @@ public class PokemonFragment extends Fragment
     @Override
     public void onPokemonSpecieSucess(Specie specie) {
         if (specie != null) {
-            if (Preferences.getSpecie(getContext(), specie.getName()) == null)
-                Preferences.saveSpecie(getContext(), specie);
+            if (Preferences.getSpecie(context, specie.getName()) == null)
+                Preferences.saveSpecie(context, specie);
 
             String[] evolutionUrl = specie.getEvolutionSpecie().getUrl().split("/");
 
-            Evolution evolution = Preferences.getEvolution(getContext(),
+            Evolution evolution = Preferences.getEvolution(context,
                     Integer.parseInt(evolutionUrl[evolutionUrl.length - 1]));
 
             if (evolution == null)
@@ -336,12 +358,19 @@ public class PokemonFragment extends Fragment
     @Override
     public void onPokemonEvolutionSucess(Evolution evolution) {
         if (evolution != null) {
-            if (Preferences.getEvolution(getContext(), evolution.getId()) == null)
-                Preferences.saveEvolution(getContext(), evolution);
+            if (Preferences.getEvolution(context, evolution.getId()) == null)
+                Preferences.saveEvolution(context, evolution);
 
             for (int i = 0; i < pokemon.getAbilities().size(); i++) {
                 String[] ability = pokemon.getAbilities().get(i).getAbilitySimple().getUrl().split("/");
-                presenter.getAbility(Integer.parseInt(ability[ability.length - 1]));
+
+                AbilityInfo abilityInfo = Preferences.getAbility(context,
+                        Integer.parseInt(ability[ability.length - 1]));
+
+                if (abilityInfo == null)
+                    presenter.getAbility(Integer.parseInt(
+                            ability[ability.length - 1]));
+                else onAbilitySucess(abilityInfo);
             }
 
             for (int i = 0; i < evolution.getEvolves_to().getEvolves_to().size(); i++) {
@@ -349,7 +378,7 @@ public class PokemonFragment extends Fragment
                 EvolvesTo evolves_to = evolution.getEvolves_to();
 
                 while (!isNull) {
-                    Pokemon pokemonSave = Preferences.getPokemon(getContext(),
+                    Pokemon pokemonSave = Preferences.getPokemon(context,
                             evolves_to.getEvolutionInfo().getName());
 
                     if (pokemonSave == null) presenter.getPokemonVector(
@@ -362,7 +391,7 @@ public class PokemonFragment extends Fragment
                 }
             }
 
-            rvEvolution.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+            rvEvolution.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
             rvEvolution.setAdapter(evolutionAdapter);
         }
     }
@@ -375,5 +404,25 @@ public class PokemonFragment extends Fragment
     @Override
     public void onComplete() {
 
+    }
+
+    @Override
+    public void onAbilityClick(AbilityInfo abilityInfo) {
+        StringBuilder abilityEntrie = new StringBuilder();
+        abilityEntrie.append("Effects: \n \n");
+
+        for (int i = 0; i < abilityInfo.getEffect_entries().size(); i++) {
+            abilityEntrie.append((i + 1) + " - " );
+            abilityEntrie.append(abilityInfo.getEffect_entries().get(i).getEffect());
+            abilityEntrie.append("\n");
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(abilityEntrie.toString())
+                .setTitle(abilityInfo.getName())
+                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) { }
+                })
+                .show();
     }
 }

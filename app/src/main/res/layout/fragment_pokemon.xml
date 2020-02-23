@@ -57,6 +57,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/tv_poke_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spaccing_16"
+            android:gravity="center_horizontal"
+            android:text="#1"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_poke_name" />
+
         <LinearLayout
             android:id="@+id/ll_types"
             android:layout_width="wrap_content"
@@ -279,7 +292,7 @@
                 android:text="Stats"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/gray_dark"
                 android:layout_marginTop="@dimen/spaccing_8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -415,6 +428,31 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title_special_defense" />
+
+            <TextView
+                android:id="@+id/tv_abilities"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Abilities"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/gray_dark"
+                android:layout_marginTop="@dimen/spaccing_16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_speed" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_abilities"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintVertical_weight="1"
+                android:layout_marginEnd="@dimen/spaccing_8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_abilities" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

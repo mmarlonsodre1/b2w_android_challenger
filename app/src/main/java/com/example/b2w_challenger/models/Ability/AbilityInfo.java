@@ -8,6 +8,9 @@ public class AbilityInfo {
     @SerializedName("name")
     String name;
 
+    @SerializedName("id")
+    int id;
+
     @SerializedName("effect_changes")
     List<EffectChange> effect_changes;
 
@@ -20,6 +23,10 @@ public class AbilityInfo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public List<EffectChange> getEffect_changes() {

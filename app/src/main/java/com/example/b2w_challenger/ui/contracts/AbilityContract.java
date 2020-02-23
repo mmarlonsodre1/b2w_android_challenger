@@ -23,4 +23,8 @@ public interface AbilityContract {
         void getPokemonSpecie(String pokemonName);
         void getPokemonEvolution(int idEvolution);
     }
+
+    interface AbilityClickListener {
+        void onAbilityClick(AbilityInfo abilityInfo);
+    }
 }

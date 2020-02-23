@@ -38,7 +38,7 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.txtName.setText(pokemonList.get(position).getName());
+        holder.tvName.setText(pokemonList.get(position).getName());
         holder.bind(getPokemon(position));
 
         String id = "";
@@ -49,6 +49,8 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.ViewHold
             if (pokemonList.get(position).getId() != null)
                 id = String.valueOf(pokemonList.get(position).getId());
         }
+
+        holder.tvId.setText("#" + id);
         Picasso.get().load(BASE_IMAGE_URL + id + ".png")
                 .placeholder(R.drawable.ic_ball)
                 .fit()
@@ -71,12 +73,14 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.ViewHold
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView txtName;
+        private TextView tvName;
+        private TextView tvId;
         private ImageView imgPoke;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtName = itemView.findViewById(R.id.tv_poke_name);
+            tvName = itemView.findViewById(R.id.tv_poke_name);
+            tvId = itemView.findViewById(R.id.tv_poke_id);
             imgPoke = itemView.findViewById(R.id.img_poke);
         }
 

@@ -34,7 +34,7 @@ public class EvolutionItemAdapter extends RecyclerView.Adapter<EvolutionItemAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.txtName.setText(pokemonList.get(position).getName());
+        holder.tvName.setText(pokemonList.get(position).getName());
         Picasso.get().load(BASE_IMAGE_URL +
                 String.valueOf(pokemonList.get(position).getId()) + ".png")
                 .placeholder(R.drawable.ic_ball)
@@ -51,13 +51,13 @@ public class EvolutionItemAdapter extends RecyclerView.Adapter<EvolutionItemAdap
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView txtName;
+        private TextView tvName;
         private ImageView imgPoke;
         private ImageView imgArrow;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtName = itemView.findViewById(R.id.tv_poke_name);
+            tvName = itemView.findViewById(R.id.tv_poke_name);
             imgPoke = itemView.findViewById(R.id.img_poke);
             imgArrow = itemView.findViewById(R.id.img_arrow);
         }
