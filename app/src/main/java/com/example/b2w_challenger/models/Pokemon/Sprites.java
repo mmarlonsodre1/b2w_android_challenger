@@ -1,4 +1,4 @@
-package com.example.b2w_challenger.models;
+package com.example.b2w_challenger.models.Pokemon;
 
 import com.google.gson.annotations.SerializedName;
 

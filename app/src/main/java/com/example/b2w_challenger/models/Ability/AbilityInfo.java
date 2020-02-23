@@ -1,4 +1,4 @@
-package com.example.b2w_challenger.models;
+package com.example.b2w_challenger.models.Ability;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -36,42 +36,5 @@ public class AbilityInfo {
 
     public void setEffect_entries(List<EffectEntrie> effect_entries) {
         this.effect_entries = effect_entries;
-    }
-
-    public class EffectChange {
-        @SerializedName("effect")
-        String effect;
-
-        public String getEffect() {
-            return effect;
-        }
-
-        public void setEffect(String effect) {
-            this.effect = effect;
-        }
-    }
-
-    public class EffectEntrie {
-        @SerializedName("effect")
-        String effect;
-
-        @SerializedName("short_effect")
-        String short_effect;
-
-        public String getEffect() {
-            return effect;
-        }
-
-        public void setEffect(String effect) {
-            this.effect = effect;
-        }
-
-        public String getShort_effect() {
-            return short_effect;
-        }
-
-        public void setShort_effect(String short_effect) {
-            this.short_effect = short_effect;
-        }
     }
 }

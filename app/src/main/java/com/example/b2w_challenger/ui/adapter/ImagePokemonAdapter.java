@@ -11,7 +11,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.b2w_challenger.R;
-import com.example.b2w_challenger.models.Sprites;
+import com.example.b2w_challenger.models.Pokemon.Sprites;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

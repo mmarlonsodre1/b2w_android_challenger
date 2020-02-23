@@ -11,7 +11,7 @@ import androidx.navigation.fragment.FragmentNavigator;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.b2w_challenger.R;
-import com.example.b2w_challenger.models.Pokedex;
+import com.example.b2w_challenger.models.Pokedex.PokemonSimple;
 import com.example.b2w_challenger.ui.contracts.PokedexContract;
 import com.squareup.picasso.Picasso;
 
@@ -20,10 +20,10 @@ import java.util.List;
 import static com.example.b2w_challenger.services.PokemonService.BASE_IMAGE_URL;
 
 public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.ViewHolder> {
-    private List<Pokedex.PokemonSimple> pokemonList;
+    private List<PokemonSimple> pokemonList;
     private final PokedexContract.PokedexClickListener pokedexClickListener;
 
-    public PokedexAdapter(List<Pokedex.PokemonSimple> pokemonList, PokedexContract.PokedexClickListener pokedexClickListener) {
+    public PokedexAdapter(List<PokemonSimple> pokemonList, PokedexContract.PokedexClickListener pokedexClickListener) {
         this.pokemonList = pokemonList;
         this.pokedexClickListener = pokedexClickListener;
     }
@@ -41,11 +41,14 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.ViewHold
         holder.txtName.setText(pokemonList.get(position).getName());
         holder.bind(getPokemon(position));
 
-        String id;
+        String id = "";
         if (pokemonList.get(position).getUrl() != null) {
             String[] url = pokemonList.get(position).getUrl().split("/");
             id = url[url.length - 1];
-        } else id = String.valueOf(pokemonList.get(position).getId());
+        } else {
+            if (pokemonList.get(position).getId() != null)
+                id = String.valueOf(pokemonList.get(position).getId());
+        }
         Picasso.get().load(BASE_IMAGE_URL + id + ".png")
                 .placeholder(R.drawable.ic_ball)
                 .fit()
@@ -58,12 +61,12 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.ViewHold
         else return 0;
     }
 
-    private Pokedex.PokemonSimple getPokemon(int position) {
+    private PokemonSimple getPokemon(int position) {
         if (position > pokemonList.size()) return null;
         return pokemonList.get(position);
     }
 
-    public void setPokemonList(List<Pokedex.PokemonSimple> pokemonList) {
+    public void setPokemonList(List<PokemonSimple> pokemonList) {
         this.pokemonList = pokemonList;
     }
 
@@ -77,11 +80,11 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.ViewHold
             imgPoke = itemView.findViewById(R.id.img_poke);
         }
 
-        public void bind(Pokedex.PokemonSimple pokemon) {
+        public void bind(PokemonSimple pokemon) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    imgPoke.setTransitionName(pokemon.getName());
+                    imgPoke.setTransitionName("transition" + pokemon.getName());
                     FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder().addSharedElement(imgPoke, pokemon.getName()).build();
                     pokedexClickListener.onPokemonClick(pokemon, view, extras);
                 }

@@ -1,4 +1,4 @@
-package com.example.b2w_challenger.models;
+package com.example.b2w_challenger.models.Pokemon;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -7,22 +7,13 @@ public class Stats {
     String base_stat;
 
     @SerializedName("stat")
-    Stat stat;
-
-    public class Stat {
-        @SerializedName("name")
-        String name;
-
-        public String getName() {
-            return name;
-        }
-    }
+    StatsSimple stat;
 
     public String getBase_stat() {
         return base_stat;
     }
 
-    public Stat getStat() {
+    public StatsSimple getStat() {
         return stat;
     }
 }

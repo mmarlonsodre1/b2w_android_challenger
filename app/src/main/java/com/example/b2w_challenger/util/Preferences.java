@@ -2,13 +2,13 @@ package com.example.b2w_challenger.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.speech.SpeechRecognizer;
 
-import com.example.b2w_challenger.models.Ability;
-import com.example.b2w_challenger.models.Evolution;
-import com.example.b2w_challenger.models.Pokedex;
-import com.example.b2w_challenger.models.Pokemon;
-import com.example.b2w_challenger.models.Specie;
+import com.example.b2w_challenger.models.Pokemon.Ability;
+import com.example.b2w_challenger.models.Evolution.Evolution;
+import com.example.b2w_challenger.models.Pokedex.Pokedex;
+import com.example.b2w_challenger.models.Pokemon.Pokemon;
+import com.example.b2w_challenger.models.PokemonType.Type;
+import com.example.b2w_challenger.models.Specie.Specie;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -21,6 +21,7 @@ public class Preferences {
     private static final String SPECIE_LIST = "specie_list";
     private static final String EVOLUTION_LIST = "evolution_list";
     private static final String ABILITY_LIST = "ability_list";
+    private static final String POKEMON_TYPE_LIST = "pokemon_type_list";
     private static final String PREFS_COOKIES = "cookies_preferences";
 
     private static SharedPreferences preferencesCookies;
@@ -281,4 +282,59 @@ public class Preferences {
         return null;
     }
     //Todo: Finish Ability
+
+    //Todo: Pokémon Type
+    private static boolean existTypePokemon(List<Type> typePokemonList, Type typePokemon) {
+        if (typePokemonList != null) {
+            for (Type typePokemon1 : typePokemonList) {
+                if (typePokemon1.getId() == typePokemon.getId()) return true;
+            }
+        }
+        return false;
+    }
+
+    public static void saveTypePokemon(Context context, Type typePokemon){
+        if(preferencesCookies == null){
+            preferencesCookies = getInstancePreferenceCookies(context);
+        }
+        List<Type> typePokemonList = getTypePokemonList(context);
+        if (!existTypePokemon(typePokemonList, typePokemon)) {
+            typePokemonList.add(typePokemon);
+            SharedPreferences.Editor editor = preferencesCookies.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(typePokemonList);
+            editor.putString(POKEMON_TYPE_LIST, json);
+            editor.apply();
+        }
+    }
+
+    public static ArrayList<Type> getTypePokemonList(Context context) {
+        if(preferencesCookies == null){
+            preferencesCookies = getInstancePreferenceCookies(context);
+        }
+        List<Type> typePokemonList;
+        if (preferencesCookies.contains(POKEMON_TYPE_LIST)) {
+            String json = preferencesCookies.getString(POKEMON_TYPE_LIST, null);
+            Gson gson = new Gson();
+            Type[] typePokemonVector = gson.fromJson(json,
+                    Type[].class);
+            typePokemonList = Arrays.asList(typePokemonVector);
+            typePokemonList = new ArrayList<>(typePokemonList);
+            return (ArrayList<Type>) typePokemonList;
+        }
+        return new ArrayList<>();
+    }
+
+    public static Type getTypePokemon(Context context, Integer type){
+        if(preferencesCookies == null){
+            preferencesCookies = getInstancePreferenceCookies(context);
+        }
+        List<Type> typePokemonList = getTypePokemonList(context);
+        for (Type typePokemon : typePokemonList) {
+            if (typePokemon.getId() == type)
+                return typePokemon;
+        }
+        return null;
+    }
+    //Todo: Finish Pokémon Type
 }

@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.b2w_challenger.R;
-import com.example.b2w_challenger.models.Pokemon;
+import com.example.b2w_challenger.models.Pokemon.Pokemon;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

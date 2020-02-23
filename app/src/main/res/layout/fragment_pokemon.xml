@@ -21,6 +21,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.viewpager.widget.ViewPager
+            android:contentDescription="@string/carousel_pokemon"
             android:id="@+id/vp_image_pokemon"
             android:layout_width="match_parent"
             android:layout_height="250dp"
@@ -70,6 +71,7 @@
             app:layout_constraintTop_toBottomOf="@+id/vp_image_pokemon">
 
             <ImageView
+                android:contentDescription="@string/buttom_bug"
                 android:id="@+id/img_bug"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -79,6 +81,7 @@
                 android:visibility="visible" />
 
             <ImageView
+                android:contentDescription="@string/buttom_dark"
                 android:id="@+id/img_dark"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -88,6 +91,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_dragon"
                 android:id="@+id/img_dragon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -97,6 +101,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_electric"
                 android:id="@+id/img_eletric"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -106,6 +111,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_fairy"
                 android:id="@+id/img_fairy"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -115,6 +121,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_fighting"
                 android:id="@+id/img_fighting"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -124,6 +131,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_fire"
                 android:id="@+id/img_fire"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -133,6 +141,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_flying"
                 android:id="@+id/img_flying"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -142,6 +151,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_ghost"
                 android:id="@+id/img_ghost"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -151,6 +161,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_grass"
                 android:id="@+id/img_grass"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -160,6 +171,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_ground"
                 android:id="@+id/img_ground"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -169,6 +181,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_ice"
                 android:id="@+id/img_ice"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -178,6 +191,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_normal"
                 android:id="@+id/img_normal"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -187,6 +201,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_poison"
                 android:id="@+id/img_poison"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -196,6 +211,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_psychic"
                 android:id="@+id/img_psyshic"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -205,6 +221,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_rock"
                 android:id="@+id/img_rock"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -214,6 +231,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_steel"
                 android:id="@+id/img_steel"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -223,6 +241,7 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:contentDescription="@string/buttom_water"
                 android:id="@+id/img_water"
                 android:layout_width="24dp"
                 android:layout_height="24dp"

@@ -8,18 +8,31 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/sv_pokemon"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:queryHint="@string/pokemon"
-        app:iconifiedByDefault="false"
         android:elevation="@dimen/spaccing_4"
+        app:iconifiedByDefault="false"
+        app:layout_constraintEnd_toStartOf="@+id/sp_types"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="@string/pokemon" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/sp_types"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spaccing_16"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_pokemons"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintVertical_weight="1"
         android:foregroundGravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sv_pokemon" />

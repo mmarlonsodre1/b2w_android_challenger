@@ -1,7 +1,8 @@
 package com.example.b2w_challenger.ui.presenter;
 
-import com.example.b2w_challenger.models.Pokedex;
-import com.example.b2w_challenger.models.Pokemon;
+import com.example.b2w_challenger.models.Pokedex.Pokedex;
+import com.example.b2w_challenger.models.Pokemon.Pokemon;
+import com.example.b2w_challenger.models.PokemonType.Type;
 import com.example.b2w_challenger.services.PokemonService;
 import com.example.b2w_challenger.ui.contracts.PokedexContract;
 
@@ -99,6 +100,36 @@ public class PokedexPresenter implements PokedexContract.PokedexPresenterInterfa
                     @Override
                     public void onNext(Pokemon pokemon) {
                         pokedexInterface.onPokemonSucess(pokemon);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        pokedexInterface.OnPokemonError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        pokedexInterface.onComplete();
+                    }
+                });
+    }
+
+    @Override
+    public void getPokemonType(String type) {
+        pokemonService = retrofit.create(PokemonService.class);
+        pokemonService.getPokemonType(type)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<Type>() {
+                    @Override
+                    protected void onStart() {
+                        super.onStart();
+                        pokedexInterface.onBefore();
+                    }
+
+                    @Override
+                    public void onNext(Type pokemonType) {
+                        pokedexInterface.onPokemonTypeSucess(pokemonType);
                     }
 
                     @Override

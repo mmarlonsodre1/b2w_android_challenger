@@ -1,8 +1,7 @@
-package com.example.b2w_challenger.models;
+package com.example.b2w_challenger.models.Pokedex;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class Pokedex {
@@ -41,40 +40,5 @@ public class Pokedex {
 
     public void setResults(List<PokemonSimple> results) {
         this.results = results;
-    }
-
-    public static class PokemonSimple implements Serializable {
-        public PokemonSimple(String name, int id) {
-            this.name = name;
-            this.id = id;
-        }
-
-        @SerializedName("name")
-        String name;
-
-        @SerializedName("url")
-        String url;
-
-        Integer id;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public int getId() {
-            return id;
-        }
     }
 }

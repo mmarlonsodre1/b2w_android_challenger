@@ -1,10 +1,11 @@
 package com.example.b2w_challenger.services;
 
-import com.example.b2w_challenger.models.AbilityInfo;
-import com.example.b2w_challenger.models.Evolution;
-import com.example.b2w_challenger.models.Pokedex;
-import com.example.b2w_challenger.models.Pokemon;
-import com.example.b2w_challenger.models.Specie;
+import com.example.b2w_challenger.models.Ability.AbilityInfo;
+import com.example.b2w_challenger.models.Evolution.Evolution;
+import com.example.b2w_challenger.models.Pokedex.Pokedex;
+import com.example.b2w_challenger.models.Pokemon.Pokemon;
+import com.example.b2w_challenger.models.PokemonType.Type;
+import com.example.b2w_challenger.models.Specie.Specie;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -33,6 +34,6 @@ public interface PokemonService {
     @GET("ability/{idAbility}")
     Observable<AbilityInfo> getAbilityInfo(@Path("idAbility") int idAbility);
 
-
-
+    @GET("type/{type}")
+    Observable<Type> getPokemonType(@Path("type") String type);
 }

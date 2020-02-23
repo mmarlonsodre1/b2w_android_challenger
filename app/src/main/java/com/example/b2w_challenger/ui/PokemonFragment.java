@@ -17,13 +17,14 @@ import android.widget.TextView;
 
 import com.example.b2w_challenger.MyApplication;
 import com.example.b2w_challenger.R;
-import com.example.b2w_challenger.models.AbilityInfo;
-import com.example.b2w_challenger.models.Evolution;
-import com.example.b2w_challenger.models.Pokedex;
-import com.example.b2w_challenger.models.Pokemon;
-import com.example.b2w_challenger.models.Specie;
-import com.example.b2w_challenger.models.Stats;
-import com.example.b2w_challenger.models.Types;
+import com.example.b2w_challenger.models.Ability.AbilityInfo;
+import com.example.b2w_challenger.models.Evolution.Evolution;
+import com.example.b2w_challenger.models.Evolution.EvolvesTo;
+import com.example.b2w_challenger.models.Pokedex.PokemonSimple;
+import com.example.b2w_challenger.models.Pokemon.Pokemon;
+import com.example.b2w_challenger.models.Specie.Specie;
+import com.example.b2w_challenger.models.Pokemon.Stats;
+import com.example.b2w_challenger.models.Pokemon.Types;
 import com.example.b2w_challenger.ui.adapter.EvolutionAdapter;
 import com.example.b2w_challenger.ui.adapter.ImagePokemonAdapter;
 import com.example.b2w_challenger.ui.contracts.AbilityContract;
@@ -106,14 +107,14 @@ public class PokemonFragment extends Fragment
         abilityList = new ArrayList<>();
         pokemonsVector = new List[10];
 
-        Pokedex.PokemonSimple pokemon = (Pokedex.PokemonSimple) getArguments().getSerializable("POKEMON");
+        PokemonSimple pokemon = (PokemonSimple) getArguments().getSerializable("POKEMON");
         if (pokemon != null) {
             Pokemon pokemonSave = Preferences.getPokemon(getContext(), pokemon.getName());
             if (pokemonSave == null) presenter.getPokemon(pokemon.getName());
             else onPokemonSucess(pokemonSave);
         }
 
-        vpImagePokemon.setTransitionName(pokemon.getName());
+        vpImagePokemon.setTransitionName("transition" + pokemon.getName());
     }
 
     private void setupView(View view) {
@@ -175,7 +176,7 @@ public class PokemonFragment extends Fragment
                     imgDragon.setVisibility(View.VISIBLE);
                     break;
 
-                case "eletric":
+                case "electric":
                     imgElectric.setVisibility(View.VISIBLE);
                     break;
 
@@ -345,7 +346,7 @@ public class PokemonFragment extends Fragment
 
             for (int i = 0; i < evolution.getEvolves_to().getEvolves_to().size(); i++) {
                 boolean isNull = false;
-                Evolution.EvolvesTo evolves_to = evolution.getEvolves_to();
+                EvolvesTo evolves_to = evolution.getEvolves_to();
 
                 while (!isNull) {
                     Pokemon pokemonSave = Preferences.getPokemon(getContext(),
