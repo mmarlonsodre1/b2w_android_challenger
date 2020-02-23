@@ -114,7 +114,7 @@ public class PokemonFragment extends Fragment
             else onPokemonSucess(pokemonSave);
         }
 
-        vpImagePokemon.setTransitionName("transition" + pokemon.getName());
+        vpImagePokemon.setTransitionName("transition_" + pokemon.getName());
     }
 
     private void setupView(View view) {
