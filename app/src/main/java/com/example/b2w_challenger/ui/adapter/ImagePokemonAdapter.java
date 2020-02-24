@@ -29,6 +29,7 @@ public class ImagePokemonAdapter extends PagerAdapter {
         this.sprites = sprites;
         this.defaultImage = defaultImage;
 
+        //Addictions urls
         urlImageList = new ArrayList<>();
         urlImageList.add(defaultImage);
         urlImageList.add(sprites.getFront_default());
@@ -39,6 +40,8 @@ public class ImagePokemonAdapter extends PagerAdapter {
         urlImageList.add(sprites.getBack_shiny());
         urlImageList.add(sprites.getFront_shiny_female());
         urlImageList.add(sprites.getBack_shiny_female());
+
+        //Remove nullable in list
         urlImageList.removeAll(Collections.singleton(null));
     }
 

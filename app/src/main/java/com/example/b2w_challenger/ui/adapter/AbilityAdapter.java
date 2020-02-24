@@ -12,15 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.b2w_challenger.R;
 import com.example.b2w_challenger.models.Ability.AbilityInfo;
-import com.example.b2w_challenger.ui.contracts.AbilityContract;
+import com.example.b2w_challenger.ui.contracts.PokemonContract;
 
 import java.util.List;
 
 public class AbilityAdapter extends RecyclerView.Adapter<AbilityAdapter.ViewHolder> {
     private List<AbilityInfo> abilitiesList;
-    private AbilityContract.AbilityClickListener abilityClickListener;
+    private PokemonContract.AbilityClickListener abilityClickListener;
 
-    public AbilityAdapter(List<AbilityInfo> abilitiesList, AbilityContract.AbilityClickListener abilityClickListener) {
+    public AbilityAdapter(List<AbilityInfo> abilitiesList, PokemonContract.AbilityClickListener abilityClickListener) {
         this.abilitiesList = abilitiesList;
         this.abilityClickListener = abilityClickListener;
     }
@@ -35,6 +35,7 @@ public class AbilityAdapter extends RecyclerView.Adapter<AbilityAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        // Underline on abilities name
         SpannableString name = new SpannableString(abilitiesList.get(position).getName());
         name.setSpan(new UnderlineSpan(), 0, name.length(), 0);
 

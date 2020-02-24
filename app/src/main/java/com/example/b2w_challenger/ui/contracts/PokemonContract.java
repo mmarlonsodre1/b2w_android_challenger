@@ -5,8 +5,8 @@ import com.example.b2w_challenger.models.Evolution.Evolution;
 import com.example.b2w_challenger.models.Pokemon.Pokemon;
 import com.example.b2w_challenger.models.Specie.Specie;
 
-public interface AbilityContract {
-    interface AbilitiesRequestListener {
+public interface PokemonContract {
+    interface PokemonRequestListener {
         void onAbilitySucess(AbilityInfo abilityInfo);
         void onPokemonSucess(Pokemon pokemon);
         void onPokemonSucess(Pokemon pokemon, int index);
@@ -16,7 +16,7 @@ public interface AbilityContract {
         void onComplete();
     }
 
-    interface AbilityPresenterInterface {
+    interface PokemonPresenterInterface {
         void getAbility(int abilityId);
         void getPokemon(String pokemonName);
         void getPokemonVector(String pokemonName, int index);

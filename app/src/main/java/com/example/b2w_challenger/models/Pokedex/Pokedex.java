@@ -14,10 +14,6 @@ public class Pokedex {
     @SerializedName("results")
     List<PokemonSimple> results = null;
 
-    public Pokedex(List<PokemonSimple> results) {
-        this.results = results;
-    }
-
     public int getCount() {
         return count;
     }

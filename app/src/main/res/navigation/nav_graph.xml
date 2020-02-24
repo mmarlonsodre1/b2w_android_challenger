@@ -8,21 +8,17 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.b2w_challenger.ui.HomeFragment"
-        android:label="Pokedex"
+        android:label="Pokédex"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_pokemonFragment"
-            app:destination="@id/pokemonFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/nav_default_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+            app:destination="@id/pokemonFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/pokemonFragment"
         android:name="com.example.b2w_challenger.ui.PokemonFragment"
-        android:label="Pokemon"
+        android:label="Pokémon"
         tools:layout="@layout/fragment_pokemon" />
 
 </navigation>

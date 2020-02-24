@@ -88,6 +88,7 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexAdapter.ViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //Name on Shared Element Transition
                     imgPoke.setTransitionName("transition_" + pokemon.getName());
                     FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
                             .addSharedElement(imgPoke, "transition_" + pokemon.getName()).build();

@@ -84,6 +84,11 @@ public class HomeFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     private void setupView(View view) {
         svPokemon = view.findViewById(R.id.sv_pokemon);
         progressBar = view.findViewById(R.id.progress_bar);
@@ -94,11 +99,11 @@ public class HomeFragment extends Fragment
         setupSpTypes();
         svPokemon.setOnQueryTextListener(this);
         if (pokedexAdapter.getItemCount() == 0) setupPokemonList();
+        initScrollListener();
     }
 
     private void setupRvPokemons() {
         rvPokemons.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        initScrollListener();
         rvPokemons.setAdapter(pokedexAdapter);
     }
 
@@ -131,6 +136,7 @@ public class HomeFragment extends Fragment
     }
 
     private Map<String, String> getQueryMap(String url) {
+        //Break the url to get the fields
         String[] params = url.split("[?]");
         params = params[1].split("&");
         Map<String, String> map = new HashMap<String, String>();
@@ -144,6 +150,7 @@ public class HomeFragment extends Fragment
     }
 
     private void initScrollListener() {
+        // Endless Srolling
         rvPokemons.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -164,7 +171,6 @@ public class HomeFragment extends Fragment
                                 getQueryMap(nextPage).get("offset")),
                                 Integer.parseInt(getQueryMap(nextPage).get("limit")));
                     }
-
                 }
             }
         });
@@ -185,9 +191,13 @@ public class HomeFragment extends Fragment
     @Override
     public void onNextPokedexSucess(Pokedex pokedex) {
         nextPage = pokedex.getNext();
-        pokedexViewModel.getPokedex().getValue().addAll(pokedex.getResults());
-        pokedexViewModel.getPokedex().setValue(pokedexViewModel.getPokedex().getValue());
-        Preferences.savePokedex(context, pokedex);
+
+        Pokedex pokedex1 = Preferences.getPokedex(context);
+        pokedex1.setNext(nextPage);
+        pokedex1.getResults().addAll(pokedex.getResults()); //Addiction result in old result
+
+        pokedexViewModel.getPokedex().setValue(pokedex1.getResults());
+        Preferences.savePokedex(context, pokedex1);
     }
 
     @Override
@@ -195,7 +205,7 @@ public class HomeFragment extends Fragment
         isSearch = true;
         List<PokemonSimple> pokemonSimples = new ArrayList<>();
         for (int i = 0; i < pokemonType.getPokemon().size(); i++) {
-            pokemonSimples.add(pokemonType.getPokemon().get(i).getPokemon());
+            pokemonSimples.add(pokemonType.getPokemon().get(i).getPokemon()); // Addiction pokémons in list
         }
 
         pokedexViewModel.getPokedex().setValue(pokemonSimples);
@@ -213,7 +223,7 @@ public class HomeFragment extends Fragment
 
     @Override
     public void onError(Throwable error) {
-        Toast.makeText(context, "Erro ao carregar", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, R.string.error_loading, Toast.LENGTH_SHORT).show();
         isLoading = false;
         if (progressBar.isShown()) progressBar.setVisibility(View.GONE);
     }
@@ -238,7 +248,6 @@ public class HomeFragment extends Fragment
         bundle.putSerializable("POKEMON", pokemon);
         Navigation.findNavController(view).navigate(
                 R.id.action_homeFragment_to_pokemonFragment, bundle, null, extras);
-        setupPokemonList();
         svPokemon.setQuery("", false);
     }
 
@@ -254,6 +263,7 @@ public class HomeFragment extends Fragment
     public boolean onQueryTextChange(String newText) {
         if (newText.equals("")) {
             spTypes.setSelection(0);
+            setupPokemonList();
             isSearch = false;
         }
         return false;

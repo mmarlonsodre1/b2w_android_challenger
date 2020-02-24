@@ -9,11 +9,14 @@
 - Shared Preferences
 - Dagger2
 - Picasso
+- Shared Element Transition
+- Endless Scrolling
 
 ## Detalhes Técnicos
 - Target Sdk Version 29
 - Min Sdk Version 21
 - Dispositivos: Smartphone Android
+- Arquitetura MVP
 
 ## Pré-requisitos
 - Android SDK 29

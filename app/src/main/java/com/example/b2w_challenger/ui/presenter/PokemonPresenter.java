@@ -5,7 +5,7 @@ import com.example.b2w_challenger.models.Evolution.Evolution;
 import com.example.b2w_challenger.models.Pokemon.Pokemon;
 import com.example.b2w_challenger.models.Specie.Specie;
 import com.example.b2w_challenger.services.PokemonService;
-import com.example.b2w_challenger.ui.contracts.AbilityContract;
+import com.example.b2w_challenger.ui.contracts.PokemonContract;
 
 import javax.inject.Inject;
 
@@ -14,14 +14,14 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
-public class AbilityPresenter implements AbilityContract.AbilityPresenterInterface {
-    private AbilityContract.AbilitiesRequestListener abilitiesInterface;
+public class PokemonPresenter implements PokemonContract.PokemonPresenterInterface {
+    private PokemonContract.PokemonRequestListener abilitiesInterface;
     private PokemonService abilitiesService;
 
     @Inject
     Retrofit retrofit;
 
-    public AbilityPresenter(AbilityContract.AbilitiesRequestListener abilitiesInterface) {
+    public PokemonPresenter(PokemonContract.PokemonRequestListener abilitiesInterface) {
         this.abilitiesInterface = abilitiesInterface;
     }
 

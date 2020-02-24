@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.example.b2w_challenger.MyApplication;
 import com.example.b2w_challenger.R;
 import com.example.b2w_challenger.models.Ability.AbilityInfo;
-import com.example.b2w_challenger.models.Ability.EffectEntrie;
 import com.example.b2w_challenger.models.Evolution.Evolution;
 import com.example.b2w_challenger.models.Evolution.EvolvesTo;
 import com.example.b2w_challenger.models.Pokedex.PokemonSimple;
@@ -32,8 +31,8 @@ import com.example.b2w_challenger.models.Pokemon.Types;
 import com.example.b2w_challenger.ui.adapter.AbilityAdapter;
 import com.example.b2w_challenger.ui.adapter.EvolutionAdapter;
 import com.example.b2w_challenger.ui.adapter.ImagePokemonAdapter;
-import com.example.b2w_challenger.ui.contracts.AbilityContract;
-import com.example.b2w_challenger.ui.presenter.AbilityPresenter;
+import com.example.b2w_challenger.ui.contracts.PokemonContract;
+import com.example.b2w_challenger.ui.presenter.PokemonPresenter;
 import com.example.b2w_challenger.util.Preferences;
 import com.google.android.material.tabs.TabLayout;
 
@@ -47,8 +46,8 @@ import static com.example.b2w_challenger.services.PokemonService.BASE_API_URL;
 import static com.example.b2w_challenger.services.PokemonService.BASE_IMAGE_URL;
 
 public class PokemonFragment extends Fragment
-        implements AbilityContract.AbilitiesRequestListener, AbilityContract.AbilityClickListener {
-    private AbilityPresenter presenter;
+        implements PokemonContract.PokemonRequestListener, PokemonContract.AbilityClickListener {
+    private PokemonPresenter presenter;
     private List<AbilityInfo> abilityList;
     private List<Pokemon>[] pokemonsVector;
     private Pokemon pokemon;
@@ -96,13 +95,14 @@ public class PokemonFragment extends Fragment
     public void onCreate(@androidx.annotation.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getContext();
-        setSharedElementEnterTransition(TransitionInflater.from(context).inflateTransition(android.R.transition.move).setDuration(350));
+        setSharedElementEnterTransition(TransitionInflater.from(context)
+                .inflateTransition(android.R.transition.move).setDuration(350));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        presenter = new AbilityPresenter(this);
+        presenter = new PokemonPresenter(this);
         ((MyApplication) getActivity().getApplication()).setServiceComponent(BASE_API_URL);
         ((MyApplication) getActivity().getApplication()).getServiceComponent().inject(presenter);
 
@@ -124,7 +124,7 @@ public class PokemonFragment extends Fragment
             else onPokemonSucess(pokemonSave);
         }
 
-        vpImagePokemon.setTransitionName("transition_" + pokemon.getName());
+        vpImagePokemon.setTransitionName("transition_" + pokemon.getName()); // shared element transition
     }
 
     private void setupView(View view) {
@@ -177,8 +177,7 @@ public class PokemonFragment extends Fragment
 
     private void forPokemonTypes(List<Types> types) {
         for (int i = 0; i < types.size(); i++) {
-
-            switch (types.get(i).getType().getName()) {
+            switch (types.get(i).getType().getName()) { //Show type icons
                 case "bug":
                     imgBug.setVisibility(View.VISIBLE);
                     break;
@@ -254,7 +253,7 @@ public class PokemonFragment extends Fragment
         }
     }
 
-    private void forStats(List<Stats> stats) {
+    private void forStats(List<Stats> stats) { //Pokémon stats values
         for (int i = 0; i < stats.size(); i++) {
             switch (i) {
                 case 0:
@@ -343,10 +342,10 @@ public class PokemonFragment extends Fragment
             if (Preferences.getSpecie(context, specie.getName()) == null)
                 Preferences.saveSpecie(context, specie);
 
-            String[] evolutionUrl = specie.getEvolutionSpecie().getUrl().split("/");
+            String[] evolutionUrl = specie.getEvolutionSpecie().getUrl().split("/"); //Parse evolution url
 
             Evolution evolution = Preferences.getEvolution(context,
-                    Integer.parseInt(evolutionUrl[evolutionUrl.length - 1]));
+                    Integer.parseInt(evolutionUrl[evolutionUrl.length - 1])); //use id on parse url
 
             if (evolution == null)
                 presenter.getPokemonEvolution(Integer.parseInt(
@@ -362,14 +361,15 @@ public class PokemonFragment extends Fragment
                 Preferences.saveEvolution(context, evolution);
 
             for (int i = 0; i < pokemon.getAbilities().size(); i++) {
-                String[] ability = pokemon.getAbilities().get(i).getAbilitySimple().getUrl().split("/");
+                String[] ability = pokemon.getAbilities().get(i)
+                        .getAbilitySimple().getUrl().split("/"); //Parse ability url
 
                 AbilityInfo abilityInfo = Preferences.getAbility(context,
-                        Integer.parseInt(ability[ability.length - 1]));
+                        Integer.parseInt(ability[ability.length - 1])); //use id on parse url to shared preferences
 
                 if (abilityInfo == null)
                     presenter.getAbility(Integer.parseInt(
-                            ability[ability.length - 1]));
+                            ability[ability.length - 1])); //use id on parse url to call api
                 else onAbilitySucess(abilityInfo);
             }
 
@@ -377,7 +377,7 @@ public class PokemonFragment extends Fragment
                 boolean isNull = false;
                 EvolvesTo evolves_to = evolution.getEvolves_to();
 
-                while (!isNull) {
+                while (!isNull) { //form recursive to get pokémon evolutions
                     Pokemon pokemonSave = Preferences.getPokemon(context,
                             evolves_to.getEvolutionInfo().getName());
 
@@ -411,7 +411,7 @@ public class PokemonFragment extends Fragment
         StringBuilder abilityEntrie = new StringBuilder();
         abilityEntrie.append("Effects: \n \n");
 
-        for (int i = 0; i < abilityInfo.getEffect_entries().size(); i++) {
+        for (int i = 0; i < abilityInfo.getEffect_entries().size(); i++) { //Mount dialog ability text
             abilityEntrie.append((i + 1) + " - " );
             abilityEntrie.append(abilityInfo.getEffect_entries().get(i).getEffect());
             abilityEntrie.append("\n");

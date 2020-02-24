@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.b2w_challenger.models.Ability.AbilityInfo;
-import com.example.b2w_challenger.models.Pokemon.Ability;
 import com.example.b2w_challenger.models.Evolution.Evolution;
 import com.example.b2w_challenger.models.Pokedex.Pokedex;
 import com.example.b2w_challenger.models.Pokemon.Pokemon;
