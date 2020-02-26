@@ -16,7 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.b2w_challenger.MyApplication;
 import com.example.b2w_challenger.R;
@@ -62,6 +64,7 @@ public class PokemonFragment extends Fragment
     private ViewPager vpImagePokemon;
 
     private TabLayout tbDots;
+    private ProgressBar progressBar;
 
     private ImageView imgBug;
     private ImageView imgDark;
@@ -132,6 +135,7 @@ public class PokemonFragment extends Fragment
         rvAbilities = view.findViewById(R.id.rv_abilities);
         vpImagePokemon = view.findViewById(R.id.vp_image_pokemon);
         tbDots = view.findViewById(R.id.tb_dot);
+        progressBar = view.findViewById(R.id.progress_bar);
 
         imgBug = view.findViewById(R.id.img_bug);
         imgDark = view.findViewById(R.id.img_dark);
@@ -397,13 +401,19 @@ public class PokemonFragment extends Fragment
     }
 
     @Override
-    public void onError(Throwable error) {
+    public void onBefore() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    public void onError(Throwable error) {
+        Toast.makeText(context, R.string.intern_error, Toast.LENGTH_SHORT).show();
+        if (progressBar.isShown()) progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void onComplete() {
-
+        if (progressBar.isShown()) progressBar.setVisibility(View.GONE);
     }
 
     @Override

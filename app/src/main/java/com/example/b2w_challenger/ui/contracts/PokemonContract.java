@@ -7,6 +7,7 @@ import com.example.b2w_challenger.models.Specie.Specie;
 
 public interface PokemonContract {
     interface PokemonRequestListener {
+        void onBefore();
         void onAbilitySucess(AbilityInfo abilityInfo);
         void onPokemonSucess(Pokemon pokemon);
         void onPokemonSucess(Pokemon pokemon, int index);

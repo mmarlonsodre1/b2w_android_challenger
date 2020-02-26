@@ -23,5 +23,5 @@
     <string name="carousel_pokemon">Carousel pokémon image</string>
     <string name="ok">ok</string>
     <string name="ability">Ability</string>
-    <string name="error_loading">Error loading</string>
+    <string name="intern_error">Intern Error</string>
 </resources>

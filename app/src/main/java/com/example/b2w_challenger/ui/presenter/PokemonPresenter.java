@@ -33,6 +33,12 @@ public class PokemonPresenter implements PokemonContract.PokemonPresenterInterfa
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<AbilityInfo>() {
                     @Override
+                    protected void onStart() {
+                        super.onStart();
+                        abilitiesInterface.onBefore();
+                    }
+
+                    @Override
                     public void onNext(AbilityInfo abilityInfo) {
                         abilitiesInterface.onAbilitySucess(abilityInfo);
                     }
@@ -56,6 +62,12 @@ public class PokemonPresenter implements PokemonContract.PokemonPresenterInterfa
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<Pokemon>() {
+                    @Override
+                    protected void onStart() {
+                        super.onStart();
+                        abilitiesInterface.onBefore();
+                    }
+
                     @Override
                     public void onNext(Pokemon pokemon) {
                         abilitiesInterface.onPokemonSucess(pokemon);
@@ -81,6 +93,12 @@ public class PokemonPresenter implements PokemonContract.PokemonPresenterInterfa
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<Pokemon>() {
                     @Override
+                    protected void onStart() {
+                        super.onStart();
+                        abilitiesInterface.onBefore();
+                    }
+
+                    @Override
                     public void onNext(Pokemon pokemon) {
                         abilitiesInterface.onPokemonSucess(pokemon, index);
                     }
@@ -105,6 +123,12 @@ public class PokemonPresenter implements PokemonContract.PokemonPresenterInterfa
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<Specie>() {
                     @Override
+                    protected void onStart() {
+                        super.onStart();
+                        abilitiesInterface.onBefore();
+                    }
+
+                    @Override
                     public void onNext(Specie specie) {
                         abilitiesInterface.onPokemonSpecieSucess(specie);
                     }
@@ -128,6 +152,12 @@ public class PokemonPresenter implements PokemonContract.PokemonPresenterInterfa
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<Evolution>() {
+                    @Override
+                    protected void onStart() {
+                        super.onStart();
+                        abilitiesInterface.onBefore();
+                    }
+
                     @Override
                     public void onNext(Evolution evolution) {
                         abilitiesInterface.onPokemonEvolutionSucess(evolution);

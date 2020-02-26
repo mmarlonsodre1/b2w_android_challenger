@@ -223,7 +223,7 @@ public class HomeFragment extends Fragment
 
     @Override
     public void onError(Throwable error) {
-        Toast.makeText(context, R.string.error_loading, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, R.string.intern_error, Toast.LENGTH_SHORT).show();
         isLoading = false;
         if (progressBar.isShown()) progressBar.setVisibility(View.GONE);
     }
