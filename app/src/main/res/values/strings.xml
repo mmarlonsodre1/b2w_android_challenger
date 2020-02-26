@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">B2W_Challenger</string>
+    <string name="pokemon">Pokémon</string>
+    <string name="no_pokemon">Pokémon not found</string>
+    <string name="buttom_bug">Buttom Bugs Pokémons</string>
+    <string name="buttom_water">Buttom Water Pokémons</string>
+    <string name="buttom_steel">Buttom Steel Pokémons</string>
+    <string name="buttom_rock">Buttom Rock Pokémons</string>
+    <string name="buttom_psychic">Buttom Psychic Pokémons</string>
+    <string name="buttom_poison">Buttom Poison Pokémons</string>
+    <string name="buttom_normal">Buttom Normal Pokémons</string>
+    <string name="buttom_ice">Buttom Ice Pokémons</string>
+    <string name="buttom_ground">Buttom Ground Pokémons</string>
+    <string name="buttom_grass">Buttom Grass Pokémons</string>
+    <string name="buttom_ghost">Buttom Ghost Pokémons</string>
+    <string name="buttom_flying">Buttom Flying Pokémons</string>
+    <string name="buttom_fire">Buttom Fire Pokémons</string>
+    <string name="buttom_fighting">Buttom Fighting Pokémons</string>
+    <string name="buttom_fairy">Buttom Fairy Pokémons</string>
+    <string name="buttom_electric">Buttom Electric Pokémons</string>
+    <string name="buttom_dragon">Buttom Dragon Pokémons</string>
+    <string name="buttom_dark">Buttom Dark Pokémons</string>
+    <string name="carousel_pokemon">Carousel pokémon image</string>
+    <string name="ok">ok</string>
+    <string name="ability">Ability</string>
+    <string name="intern_error">Intern Error</string>
 </resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.b2w_challenger.ui.HomeFragment"
+        android:label="Pokédex"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_pokemonFragment"
+            app:destination="@id/pokemonFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pokemonFragment"
+        android:name="com.example.b2w_challenger.ui.PokemonFragment"
+        android:label="Pokémon"
+        tools:layout="@layout/fragment_pokemon" />
+
+</navigation>
