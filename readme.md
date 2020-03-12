@@ -1,5 +1,7 @@
 #B2W Challenger - Android
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d6c2fd7fb0bb44778165e4cc7c670e48)](https://app.codacy.com/manual/mmarlonsodre1/b2w_android_challenger?utm_source=github.com&utm_medium=referral&utm_content=mmarlonsodre1/b2w_android_challenger&utm_campaign=Badge_Grade_Settings)
+
 ## Tecnologias Utilizadas
 *   Retrofit2
 *   GSON
