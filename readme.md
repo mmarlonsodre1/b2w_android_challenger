@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5181eff7f42a46dfa4d0ca99aa3779b9)](https://www.codacy.com/manual/mmarlonsodre1/b2w_android_challenger?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mmarlonsodre1/b2w_android_challenger&amp;utm_campaign=Badge_Grade)
+
 #B2W Challenger - Android
 
 ## Tecnologias Utilizadas
