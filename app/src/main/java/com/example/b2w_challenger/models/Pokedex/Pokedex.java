@@ -6,13 +6,13 @@ import java.util.List;
 
 public class Pokedex {
     @SerializedName("count")
-    int count;
+    private int count;
 
     @SerializedName("next")
-    String next;
+    private String next;
 
     @SerializedName("results")
-    List<PokemonSimple> results = null;
+    private List<PokemonSimple> results = null;
 
     public int getCount() {
         return count;

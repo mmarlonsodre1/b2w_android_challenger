@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class Specie {
     @SerializedName("evolution_chain")
-    EvolutionSpecie evolutionSpecie;
+    private EvolutionSpecie evolutionSpecie;
 
     @SerializedName("name")
-    String name;
+    private String name;
 
     public EvolutionSpecie getEvolutionSpecie() {
         return evolutionSpecie;

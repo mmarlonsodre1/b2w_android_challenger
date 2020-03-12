@@ -17,7 +17,7 @@ public interface PokedexContract {
         void onPokemonTypeSucess(Type pokemonType);
         void onPokemonSucess(Pokemon pokemon);
         void onError(Throwable error);
-        void OnPokemonError(Throwable error);
+        void onPokemonError(Throwable error);
         void onComplete();
     }
 

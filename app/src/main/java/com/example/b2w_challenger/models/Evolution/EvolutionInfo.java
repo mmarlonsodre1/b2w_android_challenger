@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class EvolutionInfo {
     @SerializedName("name")
-    String name;
+    private String name;
 
     public String getName() {
         return name;

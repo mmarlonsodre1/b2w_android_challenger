@@ -4,91 +4,91 @@ import com.google.gson.annotations.SerializedName;
 
 public class Sprites {
     @SerializedName("back_default")
-    String back_default;
+    private String backDefault;
 
     @SerializedName("back_female")
-    String back_female;
+    private String backFemale;
 
     @SerializedName("back_shiny")
-    String back_shiny;
+    private String backShiny;
 
     @SerializedName("back_shiny_female")
-    String back_shiny_female;
+    private String backShinyFemale;
 
     @SerializedName("front_default")
-    String front_default;
+    private String frontDefault;
 
     @SerializedName("front_female")
-    String front_female;
+    private String frontFemale;
 
     @SerializedName("front_shiny")
-    String front_shiny;
+    private String frontShiny;
 
     @SerializedName("front_shiny_female")
-    String front_shiny_female;
+    private String frontShinyFemale;
 
-    public String getBack_default() {
-        return back_default;
+    public String getBackDefault() {
+        return backDefault;
     }
 
-    public void setBack_default(String back_default) {
-        this.back_default = back_default;
+    public void setBackDefault(String backDefault) {
+        this.backDefault = backDefault;
     }
 
-    public String getBack_female() {
-        return back_female;
+    public String getBackFemale() {
+        return backFemale;
     }
 
-    public void setBack_female(String back_female) {
-        this.back_female = back_female;
+    public void setBackFemale(String backFemale) {
+        this.backFemale = backFemale;
     }
 
-    public String getBack_shiny() {
-        return back_shiny;
+    public String getBackShiny() {
+        return backShiny;
     }
 
-    public void setBack_shiny(String back_shiny) {
-        this.back_shiny = back_shiny;
+    public void setBackShiny(String backShiny) {
+        this.backShiny = backShiny;
     }
 
-    public String getBack_shiny_female() {
-        return back_shiny_female;
+    public String getBackShinyFemale() {
+        return backShinyFemale;
     }
 
-    public void setBack_shiny_female(String back_shiny_female) {
-        this.back_shiny_female = back_shiny_female;
+    public void setBackShinyFemale(String backShinyFemale) {
+        this.backShinyFemale = backShinyFemale;
     }
 
-    public String getFront_default() {
-        return front_default;
+    public String getFrontDefault() {
+        return frontDefault;
     }
 
-    public void setFront_default(String front_default) {
-        this.front_default = front_default;
+    public void setFrontDefault(String frontDefault) {
+        this.frontDefault = frontDefault;
     }
 
-    public String getFront_female() {
-        return front_female;
+    public String getFrontFemale() {
+        return frontFemale;
     }
 
-    public void setFront_female(String front_female) {
-        this.front_female = front_female;
+    public void setFrontFemale(String frontFemale) {
+        this.frontFemale = frontFemale;
     }
 
-    public String getFront_shiny() {
-        return front_shiny;
+    public String getFrontShiny() {
+        return frontShiny;
     }
 
-    public void setFront_shiny(String front_shiny) {
-        this.front_shiny = front_shiny;
+    public void setFrontShiny(String frontShiny) {
+        this.frontShiny = frontShiny;
     }
 
-    public String getFront_shiny_female() {
-        return front_shiny_female;
+    public String getFrontShinyFemale() {
+        return frontShinyFemale;
     }
 
-    public void setFront_shiny_female(String front_shiny_female) {
-        this.front_shiny_female = front_shiny_female;
+    public void setFrontShinyFemale(String frontShinyFemale) {
+        this.frontShinyFemale = frontShinyFemale;
     }
 }
 

@@ -6,13 +6,13 @@ import java.util.List;
 
 public class EvolvesTo{
     @SerializedName("evolves_to")
-    List<EvolvesTo> evolves_to;
+    private List<EvolvesTo> evolvesTo;
 
     @SerializedName("species")
-    EvolutionInfo evolutionInfo;
+    private EvolutionInfo evolutionInfo;
 
-    public List<EvolvesTo> getEvolves_to() {
-        return evolves_to;
+    public List<EvolvesTo> getEvolvesTo() {
+        return evolvesTo;
     }
 
     public EvolutionInfo getEvolutionInfo() {

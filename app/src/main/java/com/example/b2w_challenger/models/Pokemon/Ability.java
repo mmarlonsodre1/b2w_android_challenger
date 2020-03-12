@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Ability {
     @SerializedName("ability")
-    AbilitySimple abilitySimple;
+    private AbilitySimple abilitySimple;
 
     public void setAbilitySimple(AbilitySimple abilitySimple) {
         this.abilitySimple = abilitySimple;

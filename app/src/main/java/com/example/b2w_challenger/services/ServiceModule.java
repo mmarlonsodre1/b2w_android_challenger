@@ -17,7 +17,7 @@ import static com.example.b2w_challenger.services.PokemonService.BASE_API_URL;
 
 @Module
 public class ServiceModule {
-    String baseUrl;
+    private String baseUrl;
 
     public ServiceModule(String baseUrl) {
         this.baseUrl = baseUrl;
@@ -35,7 +35,7 @@ public class ServiceModule {
         Gson gson = new GsonBuilder().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_API_URL)
+                .baseUrl(baseUrl)
                 .client(client)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))

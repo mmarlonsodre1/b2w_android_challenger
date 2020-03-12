@@ -6,22 +6,22 @@ import java.util.List;
 
 public class Pokemon {
     @SerializedName("id")
-    int id;
+    private int id;
 
     @SerializedName("name")
-    String name;
+    private String name;
 
     @SerializedName("abilities")
-    List<Ability> abilities = null;
+    private List<Ability> abilities = null;
 
     @SerializedName("sprites")
-    Sprites sprites;
+    private Sprites sprites;
 
     @SerializedName("stats")
-    List<Stats> stats = null;
+    private List<Stats> stats = null;
 
     @SerializedName("types")
-    List<Types> types = null;
+    private List<Types> types = null;
 
     public int getId() {
         return id;

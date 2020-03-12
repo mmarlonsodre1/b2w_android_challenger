@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class AbilitySimple {
     @SerializedName("name")
-    String name;
+    private String name;
 
     @SerializedName("url")
-    String url;
+    private String url;
 
     public String getName() {
         return name;

@@ -6,13 +6,13 @@ import java.util.List;
 
 public class Type {
     @SerializedName("name")
-    String name;
+    private String name;
 
     @SerializedName("id")
-    int id;
+    private int id;
 
     @SerializedName("pokemon")
-    List<PokemonList> pokemon;
+    private List<PokemonList> pokemon;
 
     public String getName() {
         return name;

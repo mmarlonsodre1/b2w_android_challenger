@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class EffectChange {
     @SerializedName("effect")
-    String effect;
+    private String effect;
 
     public String getEffect() {
         return effect;

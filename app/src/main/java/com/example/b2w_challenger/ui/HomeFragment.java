@@ -229,7 +229,7 @@ public class HomeFragment extends Fragment
     }
 
     @Override
-    public void OnPokemonError(Throwable error) {
+    public void onPokemonError(Throwable error) {
         Toast.makeText(context, getString(R.string.no_pokemon), Toast.LENGTH_SHORT).show();
         isLoading = false;
         if (progressBar.isShown()) progressBar.setVisibility(View.GONE);

@@ -19,27 +19,23 @@ import java.util.Collections;
 import java.util.List;
 
 public class ImagePokemonAdapter extends PagerAdapter {
-    Context context;
-    private Sprites sprites;
+    private Context context;
     private List<String> urlImageList;
-    private String defaultImage;
 
     public ImagePokemonAdapter(Context context, Sprites sprites, String defaultImage) {
         this.context = context;
-        this.sprites = sprites;
-        this.defaultImage = defaultImage;
 
         //Addictions urls
         urlImageList = new ArrayList<>();
         urlImageList.add(defaultImage);
-        urlImageList.add(sprites.getFront_default());
-        urlImageList.add(sprites.getBack_default());
-        urlImageList.add(sprites.getFront_female());
-        urlImageList.add(sprites.getBack_female());
-        urlImageList.add(sprites.getFront_shiny());
-        urlImageList.add(sprites.getBack_shiny());
-        urlImageList.add(sprites.getFront_shiny_female());
-        urlImageList.add(sprites.getBack_shiny_female());
+        urlImageList.add(sprites.getFrontDefault());
+        urlImageList.add(sprites.getBackDefault());
+        urlImageList.add(sprites.getFrontFemale());
+        urlImageList.add(sprites.getBackFemale());
+        urlImageList.add(sprites.getFrontShiny());
+        urlImageList.add(sprites.getBackShiny());
+        urlImageList.add(sprites.getFrontShinyFemale());
+        urlImageList.add(sprites.getBackShinyFemale());
 
         //Remove nullable in list
         urlImageList.removeAll(Collections.singleton(null));
@@ -53,7 +49,7 @@ public class ImagePokemonAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view == object;
+        return view.equals(object);
     }
 
     @Override
