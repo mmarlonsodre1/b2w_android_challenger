@@ -11,12 +11,12 @@ public class PokemonSimple implements Serializable {
     }
 
     @SerializedName("name")
-    String name;
+    private String name;
 
     @SerializedName("url")
-    String url;
+    private String url;
 
-    Integer id;
+    private Integer id;
 
     public String getName() {
         return name;

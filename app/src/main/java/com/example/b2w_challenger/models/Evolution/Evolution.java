@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class Evolution {
     @SerializedName("chain")
-    EvolvesTo evolves_to;
+    private EvolvesTo evolvesTo;
 
     @SerializedName("id")
-    int id;
+    private int id;
 
-    public EvolvesTo getEvolves_to() {
-        return evolves_to;
+    public EvolvesTo getEvolvesTo() {
+        return evolvesTo;
     }
 
     public int getId() {

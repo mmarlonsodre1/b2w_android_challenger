@@ -56,11 +56,9 @@ public class PokemonFragment extends Fragment
     private Context context;
 
     private EvolutionAdapter evolutionAdapter;
-    private ImagePokemonAdapter imagePokemonAdapter;
     private AbilityAdapter abilityAdapter;
 
     private RecyclerView rvEvolution;
-    private RecyclerView rvAbilities;
     private ViewPager vpImagePokemon;
 
     private TabLayout tbDots;
@@ -132,7 +130,7 @@ public class PokemonFragment extends Fragment
 
     private void setupView(View view) {
         rvEvolution = view.findViewById(R.id.rv_evolution);
-        rvAbilities = view.findViewById(R.id.rv_abilities);
+        RecyclerView rvAbilities = view.findViewById(R.id.rv_abilities);
         vpImagePokemon = view.findViewById(R.id.vp_image_pokemon);
         tbDots = view.findViewById(R.id.tb_dot);
         progressBar = view.findViewById(R.id.progress_bar);
@@ -172,7 +170,7 @@ public class PokemonFragment extends Fragment
 
     private void setupCarousel() {
         String urlImageDefault = BASE_IMAGE_URL + pokemon.getId() + ".png";
-        imagePokemonAdapter = new ImagePokemonAdapter(context, pokemon.getSprites(), urlImageDefault);
+        ImagePokemonAdapter imagePokemonAdapter = new ImagePokemonAdapter(context, pokemon.getSprites(), urlImageDefault);
         vpImagePokemon.setAdapter(imagePokemonAdapter);
 
         tbDots.setupWithViewPager(vpImagePokemon, true);
@@ -261,22 +259,22 @@ public class PokemonFragment extends Fragment
         for (int i = 0; i < stats.size(); i++) {
             switch (i) {
                 case 0:
-                    tvSpeed.setText(stats.get(0).getBase_stat());
+                    tvSpeed.setText(stats.get(0).getBaseStat());
                     break;
                 case 1:
-                    tvSpecialDefense.setText(stats.get(1).getBase_stat());
+                    tvSpecialDefense.setText(stats.get(1).getBaseStat());
                     break;
                 case 2:
-                    tvSpecialAttack.setText(stats.get(2).getBase_stat());
+                    tvSpecialAttack.setText(stats.get(2).getBaseStat());
                     break;
                 case 3:
-                    tvDefense.setText(stats.get(3).getBase_stat());
+                    tvDefense.setText(stats.get(3).getBaseStat());
                     break;
                 case 4:
-                    tvAttack.setText(stats.get(4).getBase_stat());
+                    tvAttack.setText(stats.get(4).getBaseStat());
                     break;
                 case 5:
-                    tvHP.setText(stats.get(5).getBase_stat());
+                    tvHP.setText(stats.get(5).getBaseStat());
                     break;
             }
         }
@@ -377,20 +375,20 @@ public class PokemonFragment extends Fragment
                 else onAbilitySucess(abilityInfo);
             }
 
-            for (int i = 0; i < evolution.getEvolves_to().getEvolves_to().size(); i++) {
+            for (int i = 0; i < evolution.getEvolvesTo().getEvolvesTo().size(); i++) {
                 boolean isNull = false;
-                EvolvesTo evolves_to = evolution.getEvolves_to();
+                EvolvesTo evolvesTo = evolution.getEvolvesTo();
 
                 while (!isNull) { //form recursive to get pokémon evolutions
                     Pokemon pokemonSave = Preferences.getPokemon(context,
-                            evolves_to.getEvolutionInfo().getName());
+                            evolvesTo.getEvolutionInfo().getName());
 
                     if (pokemonSave == null) presenter.getPokemonVector(
-                            evolves_to.getEvolutionInfo().getName(), i);
+                            evolvesTo.getEvolutionInfo().getName(), i);
                     else onPokemonSucess(pokemonSave, i);
 
-                    if (evolves_to != null && evolves_to.getEvolves_to().size() > 0)
-                        evolves_to = evolves_to.getEvolves_to().get(i);
+                    if (evolvesTo != null && evolvesTo.getEvolvesTo().size() > 0)
+                        evolvesTo = evolvesTo.getEvolvesTo().get(i);
                     else isNull = true;
                 }
             }
@@ -421,9 +419,9 @@ public class PokemonFragment extends Fragment
         StringBuilder abilityEntrie = new StringBuilder();
         abilityEntrie.append("Effects: \n \n");
 
-        for (int i = 0; i < abilityInfo.getEffect_entries().size(); i++) { //Mount dialog ability text
-            abilityEntrie.append((i + 1) + " - " );
-            abilityEntrie.append(abilityInfo.getEffect_entries().get(i).getEffect());
+        for (int i = 0; i < abilityInfo.getEffectEntries().size(); i++) { //Mount dialog ability text
+            abilityEntrie.append(i + 1).append(" - ");
+            abilityEntrie.append(abilityInfo.getEffectEntries().get(i).getEffect());
             abilityEntrie.append("\n");
         }
 

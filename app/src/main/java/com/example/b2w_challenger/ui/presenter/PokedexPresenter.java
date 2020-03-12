@@ -104,7 +104,7 @@ public class PokedexPresenter implements PokedexContract.PokedexPresenterInterfa
 
                     @Override
                     public void onError(Throwable e) {
-                        pokedexInterface.OnPokemonError(e);
+                        pokedexInterface.onPokemonError(e);
                     }
 
                     @Override

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class EvolutionSpecie {
     @SerializedName("url")
-    String url;
+    private String url;
 
     public String getUrl() {
         return url;

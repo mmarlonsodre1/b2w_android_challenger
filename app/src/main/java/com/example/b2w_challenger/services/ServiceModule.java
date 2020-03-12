@@ -17,7 +17,7 @@ import static com.example.b2w_challenger.services.PokemonService.BASE_API_URL;
 
 @Module
 public class ServiceModule {
-    String baseUrl;
+    private String baseUrl;
 
     public ServiceModule(String baseUrl) {
         this.baseUrl = baseUrl;

@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class Stats {
     @SerializedName("base_stat")
-    String base_stat;
+    private String baseStat;
 
     @SerializedName("stat")
-    StatsSimple stat;
+    private StatsSimple stat;
 
-    public String getBase_stat() {
-        return base_stat;
+    public String getBaseStat() {
+        return baseStat;
     }
 
     public StatsSimple getStat() {

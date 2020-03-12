@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Types {
     @SerializedName("type")
-    TypesSimple type;
+    private TypesSimple type;
 
     public TypesSimple getType() {
         return type;

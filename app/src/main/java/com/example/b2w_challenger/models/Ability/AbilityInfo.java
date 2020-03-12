@@ -6,16 +6,16 @@ import java.util.List;
 
 public class AbilityInfo {
     @SerializedName("name")
-    String name;
+    private String name;
 
     @SerializedName("id")
-    int id;
+    private int id;
 
     @SerializedName("effect_changes")
-    List<EffectChange> effect_changes;
+    private List<EffectChange> effectChanges;
 
     @SerializedName("effect_entries")
-    List<EffectEntrie> effect_entries;
+    private List<EffectEntrie> effectEntries;
 
     public String getName() {
         return name;
@@ -29,19 +29,19 @@ public class AbilityInfo {
         return id;
     }
 
-    public List<EffectChange> getEffect_changes() {
-        return effect_changes;
+    public List<EffectChange> getEffectChanges() {
+        return effectChanges;
     }
 
-    public void setEffect_changes(List<EffectChange> effect_changes) {
-        this.effect_changes = effect_changes;
+    public void setEffectChanges(List<EffectChange> effectChanges) {
+        this.effectChanges = effectChanges;
     }
 
-    public List<EffectEntrie> getEffect_entries() {
-        return effect_entries;
+    public List<EffectEntrie> getEffectEntries() {
+        return effectEntries;
     }
 
-    public void setEffect_entries(List<EffectEntrie> effect_entries) {
-        this.effect_entries = effect_entries;
+    public void setEffectEntries(List<EffectEntrie> effectEntries) {
+        this.effectEntries = effectEntries;
     }
 }
